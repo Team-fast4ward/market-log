@@ -20,31 +20,39 @@
 
 // import * as signup from './page/signup';
 // import * as productDetail from './page/productDetail/productDetail';
-import { mpBestDesign, mpNewProduct, mpWeekly } from './renderMainPage.js';
+import {
+  mainPageSwiper,
+  mainPageBestDesign,
+  mainPageNewProduct,
+  mainPageWeekly,
+} from './renderMainPage.js';
 import Navigo from 'navigo';
 const $ = (selector) => document.querySelector(selector);
 
 const renderInitMainPage = () => {
   // renderMainPage('');
-  renderMainPage(mpWeekly);
-  renderMainPage(mpNewProduct);
-  renderMainPage(mpBestDesign);
+  renderMainPage(mainPageSwiper);
+  renderMainPage(mainPageWeekly);
+  renderMainPage(mainPageNewProduct);
+  renderMainPage(mainPageBestDesign);
 };
+
 /** 렌더 함수 for navigo */
 const renderMainPage = (html) => {
-  console.log(html);
+  console.log('html >>>> ', html);
   const mainPageAll = document.querySelector('.app');
   mainPageAll.innerHTML += html;
   //mainPageAll.innerHTML = '';
   //mainPageAll.append(html);
 };
+
 /** navigo router */
 const router = new Navigo('/');
 router
   .on({
     '/': () => {
       renderInitMainPage();
-      console.log('contentsMainPage    contentsMainPage');
+      console.log('renderInitMainPage    renderInitMainPage');
     },
     '/signup': () => {
       console.log('signup    signup');
@@ -55,7 +63,7 @@ router
     '/cart': () => {
       console.log('cart    cart');
     },
-    '/hart': () => {
+    '/myheart': () => {
       console.log('hart    hart');
     },
     '/mypage': () => {
