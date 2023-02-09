@@ -1,36 +1,37 @@
-//<!-- 스와이퍼 -->
+// <!-- 스와이퍼 -->
 // import * as swiper from './swiper.js';
-// import swiperImg1 from '../../public/image/swiper-sale.jpg';
-// import swiperImg2 from '../../public/image/swiper-keyboard.gif';
+import swiperImg1 from '../../public/image/swiper-sale.jpg';
+import swiperImg2 from '../../public/image/swiper-keyboard.gif';
 
-// export const mpSwiper = /*html*/ `
-// <div class="swiper swiper_wrap">
-//   <div class="swiper_item item">
-//     <img src=${swiperImg2} alt="swiper" />
-//   </div>
-//   <div class="swiper_item item">
-//     <img src=${swiperImg1} alt="swiper" />
-//   </div>
-//   <div class="swiper_prev_button swiper_button">
-//     <span class="material-symbols-outlined swiper-button-prev">arrow_back_ios</span>
-//   </div>
-//   <div class="swiper_next_button swiper_button">
-//     <span class="material-symbols-outlined swiper-button-next">arrow_forward_ios</span>
-//   </div>
-//   <ul class="swiper_pagination"></ul>
-// </div>
-// `;
+export const mainPageSwiper = /*html*/ `
+<div class="swiper swiper_wrap">
+  <div class="swiper_item">
+    <img src="${swiperImg2}" alt="swiper" />
+  </div>
+  <div class="swiper_item">
+    <img src="${swiperImg1}" alt="swiper" />
+  </div>
+  <div class="swiper_prev_button swiper_button">
+    <span class="material-symbols-outlined swiper-button-prev">arrow_back_ios</span>
+  </div>
+  <div class="swiper_next_button swiper_button">
+    <span class="material-symbols-outlined swiper-button-next">arrow_forward_ios</span>
+  </div>
+  <ul class="swiper_pagination"></ul>
+</div>
+`;
 // swiper;
 
 // <!-- WEEKLY BEST 주간 베스트 상품-->
 import weeklybest from '../../public/image/weekly-best0.jpg';
 import weeklyproduct from '../../public/image/weekly-best0.jpg';
+import purpleline from '../../public/purple-line.svg';
 
-export const mpWeekly = /*html*/ `
+export const mainPageWeekly = /*html*/ `
 <div class="weekly-container">
 <div class="section-header">
   <div class="title"> Weekly Best
-    <img src="./public/purple-line.svg" alt="purple-line">
+    <img src="${purpleline}" alt="purple-line">
   </div>
 </div>
 <div class="weekly--wrap">
@@ -38,7 +39,7 @@ export const mpWeekly = /*html*/ `
   <ul class="weekly-products">
     <li class="weekly-product">
       <a href="">
-        <img src=${weeklyproduct} alt="weekly" />
+        <img src="${weeklyproduct}" alt="weekly" />
     <li class="weekly-info-area">
       <ul class="info-list">
         <li class="info--name">[CASE] 이천이십삼년, 2023</li>
@@ -55,7 +56,7 @@ export const mpWeekly = /*html*/ `
 
 //<!-- NEW PRODUCT 새상품-->
 import newProduct from '../../public/image/best-design.jpg';
-export const mpNewProduct = /*html*/ `
+export const mainPageNewProduct = /*html*/ `
     <div class="new-product-modal">
       <div class="section-header">
         <div class="title">New Product</div>
@@ -64,7 +65,7 @@ export const mpNewProduct = /*html*/ `
         <li class="new-product">
           <a href="/productDetail" data-navigo>
             <div class="new-product--item">
-              <img src=${newProduct} alt="newproduct" />
+              <img src="${newProduct}" alt="newproduct" />
               <div class="product--fullname">
                 <span class="product--category">[CASE]</span>
                 <span class="product--name">이천이십삼년, 2023</span>
@@ -81,7 +82,7 @@ export const mpNewProduct = /*html*/ `
 // <!-- BEST DESIGN -->
 import bestDesign from '../../public/image/best-design.jpg';
 import curveLine from '../../public/curve-line.svg';
-export const mpBestDesign = /*html*/ `
+export const mainPageBestDesign = /*html*/ `
  <div class="modal-wrap">
   <div class="best-design-modal">
     <div class="main-header">
@@ -100,7 +101,7 @@ export const mpBestDesign = /*html*/ `
           </div>
           <li class="best_item">
             <a href="/productDetail" data-navigo>
-              <img src=${bestDesign} alt="best">
+              <img src="${bestDesign}" alt="best">
           <li class="best_item--info-area">
             <ul class="info-list">
               <li class="info--name">[CASE] 이천이십삼년, 2023</li>
