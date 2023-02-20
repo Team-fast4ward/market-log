@@ -1,8 +1,12 @@
 .mypage__account {
+  h2 {
+    margin-bottom: 52px;
+  }
   .user__account {
     position: relative;
     .total__balance {
-      padding: 20px 0;
+      font-size: 14px;
+      margin-top: 20px;
       text-align: right;
       span {
         color: var(--light-purple);

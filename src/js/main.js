@@ -14,12 +14,7 @@ const $ = (selector) => document.querySelector(selector);
 const router = new Navigo('/');
 const divLoadingEl = document.querySelector('.loadingGif');
 const ulEl = $('.header__user-login--ul');
-let navliList;
-// ulEl.innerHTML = /* html */ `
-//   <li class="header__user-login--li">
-//     <a href="/login" data-navigo id="btnlogin"> 로그인 </a>
-//   </li>
-// `;
+
 export async function renderInitMainPageHeader() {
   $('.app').innerHTML = '';
   const author = await authorization();
@@ -80,53 +75,6 @@ const submitEl = document.querySelector('.signup');
 const authorizationEl = document.querySelector('.authorization');
 const loginEl = document.querySelector('.login');
 // const btnLogout = document.querySelector('.logout')
-
-let id = '';
-let pw = '';
-let displayName = '';
-
-idEl.addEventListener('input', (event) => {
-  id = event.target.value;
-});
-passwordEl.addEventListener('input', (event) => {
-  pw = event.target.value;
-});
-displayNameEl.addEventListener('input', (event) => {
-  displayName = event.target.value;
-});
-submitEl.addEventListener('click', () => {
-  request({
-    url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth/signup',
-    method: 'POST',
-    data: {
-      email: id,
-      password: pw,
-      displayName: displayName,
-    },
-  });
-});
-loginEl.addEventListener('click', async () => {
-  loginEl.textContent = '로그인 시도 중...';
-  await request({
-    url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth/login',
-    method: 'POST',
-    data: {
-      email: id,
-      password: pw,
-    },
-  });
-  loginEl.textContent = '로그인 완료';
-});
-// btnLogout.addEventListener('click', () => {
-//   request({
-//     url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth/logout',
-//     method: 'POST',
-//     headers: {
-//       ...headers,
-//       Authorization: `Bearer ${window.localStorage.getItem('token')}`
-//     }
-//   })
-// })
 
 async function request(options) {
   const defaultOptions = {
@@ -192,23 +140,6 @@ function displayUserName(displayName) {
       <button id="btnlogout"> 로그아웃 </button>
     </li>
   `;
-  // $('#btnlogout').addEventListener('click', async () => {
-  //   try {
-  //     const logoutJSON = await logout();
-  //     console.log(logoutJSON);
-  //     if (logoutJSON === true) {
-  //       localStorage.removeItem('token');
-  //       ulEl.innerHTML = /* html */ `
-  //       <li class="header__user-login--li">
-  //         <a href="/login" data-navigo id="btnlogin"> 로그인 </a>
-  //       </li>
-  //     `;
-  //       router.navigate('/');
-  //     }
-  //   } catch (exception) {
-  //     alert(exception);
-  //   }
-  // });
 }
 
 async function login() {

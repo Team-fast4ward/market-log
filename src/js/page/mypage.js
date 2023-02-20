@@ -1,4 +1,3 @@
-// dotenv 사용 예시
 import dotenv from 'dotenv';
 import Navigo from 'navigo';
 import chevronrightSVG from '../../../public/chevronright.svg';
