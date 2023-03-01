@@ -24,7 +24,6 @@ export const getAllProducts = async () => {
       },
     });
     const data = await res.json();
-    console.log('jaehaData', data);
     return data;
   } catch (err) {
     console.log(err);
@@ -77,8 +76,12 @@ export const getAllTransactions = async () => {
       },
     });
     const data = await res.json();
-    console.log('거래내역', data);
-    return data;
+
+    if (res.status === 400) {
+      return [];
+    } else {
+      return data;
+    }
   } catch (err) {
     console.log('거래내역 가져오기 실패', err);
   }
@@ -187,7 +190,7 @@ export const buyItemAPI = async (productId, accountId) => {
   }
 };
 
-/** 제품 결제 API */
+/** [결제 페이지] 로그인 한 정보 가져오기 */
 export const getUserInfoAPI = async () => {
   try {
     const res = await fetch(`${base_url}/auth/me`, {
@@ -335,3 +338,145 @@ export const editCancelOrder = async (order) => {
     console.log('err: ', '거래 내역 취소/취소해제 실패');
   }
 };
+
+/** API : 은행 목록 */
+export const getBankList = async () => {
+  const res = await fetch(`${base_url}/account/banks`, {
+    method: 'GET',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  const json = await res.json();
+
+  return json;
+};
+
+/** API : 계좌 조회 */
+export const getUserAccounts = async () => {
+  const res = await fetch(`${base_url}/account`, {
+    method: 'GET',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  const json = await res.json();
+
+  return json;
+};
+
+/** API : 계좌 개설 */
+export const createUserAccount = async (bankCode) => {
+  const res = await fetch(`${base_url}/account`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      bankCode: bankCode,
+      accountNumber: document.querySelector('#input__account').value,
+      phoneNumber: document.querySelector('#input__phone').value,
+      signature: true,
+    }),
+  });
+
+  return res.ok;
+};
+
+// API : 계좌 해지
+export const deleteAccount = async (e) => {
+  const accountId = e.target.dataset.id;
+  const res = await fetch(`${base_url}/account`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      accountId: accountId,
+      signature: true,
+    }),
+  });
+
+  const json = await res.json();
+  return json;
+};
+
+/** API : Login */
+export async function login() {
+  const res = await fetch(`${base_url}/auth/login`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+    },
+    body: JSON.stringify({
+      email: document.querySelector('#inputID').value,
+      password: document.querySelector('#inputPW').value,
+    }),
+  });
+  const json = await res.json();
+  return json;
+}
+
+/** API : Logout */
+export async function logout() {
+  const res = await fetch(`${base_url}/auth/logout`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  const json = await res.json();
+  return json;
+}
+
+/** API : 인증확인 */
+export async function authorization() {
+  const res = await fetch(`${base_url}/auth/me`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  const json = await res.json();
+  return json;
+}
+
+//사용자 정보 수정 api 사용
+export async function submitChangeInfo() {
+  const res = await fetch(`${base_url}/auth/user`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      displayName: document.querySelector('#user-name').value,
+      oldPassword: document.querySelector('#user-oldpw').value,
+      newPassword: document.querySelector('#user-newpw').value,
+    }),
+  });
+  const json = await res.json();
+  return json;
+}
+// 비밀번호 재확인(login api 사용)
+export async function personalInfoLogin(auth) {
+  const res = await fetch(`${base_url}/auth/login`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      email: auth.email,
+      password: document.querySelector('#inputPW').value,
+    }),
+  });
+  const json = await res.json();
+  return json;
+}

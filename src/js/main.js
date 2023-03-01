@@ -1,24 +1,24 @@
 import Navigo from 'navigo';
 import { $ } from './utils/dom.js';
-import { htmlMypage_Nav, renderMyPageNav } from './page/mypage.js';
-import { htmlMypage_Account, initFuncAccount } from './page/mypage/account';
-// import { htmlMypage_MyHeart, initFuncMyHeart } from './page/mypage/wishlist';
-import {
-  htmlMypage_OrderHistory,
-  initFuncOrderHistory,
-} from './page/mypage/orderhistory';
-import { htmlLogin, renderInitHeaderLogin, initFuncLogin } from './page/login';
-import { htmlSignup, initFuncSignup } from './page/signup';
-import { handleCartPage } from './page/cartPage/cartPage.js';
+
 import { handleMainPage } from './page/mainPage/mainPage.js';
-import { handleCategoryPage } from './page/categoryPage/categoryPage.js';
+import { handleErrorPage } from './page/errorPage/errorPage.js';
+
+import { handleLoginPage } from './page/login.js';
+import { handleSignupPage } from './page/signup.js';
+
 import { handleSearchPage } from './page/searchPage/searchPage.js';
+import { handleCategoryPage } from './page/categoryPage/categoryPage.js';
 import { handleDetailProductPage } from './page/productDetail/productDetail.js';
-import { handleWishListPage } from './page/wishListPage/wishListPage.js';
-import { handleDetailOrderHistoryPage } from './page/detailOrderHistoryPage/detailOrderHistory.js';
+
+import { handleCartPage } from './page/cartPage/cartPage.js';
 import { handlePaymentPage } from './page/paymentPage/paymentPage.js';
+
+import { handleMyPage } from './page/mypage.js';
 import { handleOrderHistoryPage } from './page/mypage/orderhistory.js';
-import { renderPage } from './utils/render.js';
+import { handleAccountPage } from './page/mypage/account.js';
+import { handleWishListPage } from './page/mypage/wishlist.js';
+import { handleEditPersonalInfoPage } from './page/mypage/editPersonalInfo.js';
 
 import { productHandler } from './page/admin/product.js';
 import { dashboardHandler } from './page/admin/dashboard.js';
@@ -27,7 +27,7 @@ import { productAddHandler } from './page/admin/productAdd.js';
 import { productDetailHandler } from './page/admin/productDetail.js';
 import { productEditHandler } from './page/admin/productEdit.js';
 import { orderDetailHandler } from './page/admin/orderDetail.js';
-
+import { handleDetailOrderHistoryPage } from './page/mypage/detailOrderHistory.js';
 import {
   dashboardPage,
   orderPage,
@@ -37,18 +37,10 @@ import {
   productEditPage,
   sideBar,
   orderDetailPage,
-} from './page/admin/renderTemplate';
+} from './page/admin/renderTemplate.js';
 
 export const router = new Navigo('/');
 export const divLoadingEl = $('.loadingGif');
-
-function getLoginStatus() {
-  return localStorage.getItem('token') ? true : false;
-}
-function showAlertPlzLogin() {
-  alert('로그인해라');
-  router.navigate('/login');
-}
 
 const renderContainer = () => {
   $('.app').innerHTML = `<div class="container"></div>`;
@@ -95,12 +87,7 @@ router
       handleCategoryPage(3);
     },
     '/mypage': () => {
-      if (getLoginStatus() === false) {
-        showAlertPlzLogin();
-        return;
-      }
-      renderPage(htmlMypage_Nav);
-      router.navigate('mypage/order');
+      handleMyPage();
     },
     '/mypage/wishlist': () => {
       handleWishListPage();
@@ -108,33 +95,20 @@ router
     '/mypage/order': () => {
       handleOrderHistoryPage();
     },
-    '/mypage/order/:id': async (params) => {
+    '/mypage/order/:id': (params) => {
       handleDetailOrderHistoryPage(params.data.id);
     },
-    '/mypage/account': async () => {
-      if (getLoginStatus() === false) {
-        showAlertPlzLogin();
-        return;
-      }
-
-      renderMyPageNav(htmlMypage_Account);
-      await initFuncAccount();
+    '/mypage/account': () => {
+      handleAccountPage();
     },
-    '/mypage/myPersonalInfoModify': () => {
-      if (getLoginStatus() === false) {
-        showAlertPlzLogin();
-        return;
-      }
-      renderInitHeaderLogin();
-      renderMyPageNav('');
+    '/mypage/editPersonalInfo': () => {
+      handleEditPersonalInfoPage();
     },
     '/login': () => {
-      $('.app').innerHTML = htmlLogin;
-      initFuncLogin();
+      handleLoginPage();
     },
     '/signup': () => {
-      $('.app').innerHTML = htmlSignup;
-      initFuncSignup();
+      handleSignupPage();
     },
     '/admin': () => {
       initPage(dashboardPage);
@@ -164,5 +138,8 @@ router
       initPage(productEditPage);
       productEditHandler(params.data.id);
     },
+  })
+  .notFound(() => {
+    handleErrorPage();
   })
   .resolve();

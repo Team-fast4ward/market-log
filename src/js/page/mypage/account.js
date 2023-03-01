@@ -1,4 +1,9 @@
+import { $ } from '../../utils/dom.js';
 import { base_url, api_key, user_name } from '../../db.js';
+import { renderPage } from '../../utils/render.js';
+import { htmlMypage_Nav } from '../mypage.js';
+import { getLoginStatus, showAlertPlzLogin } from '../login.js';
+import { router } from '../../main.js';
 const headers = {
   'content-type': 'application/json',
   apikey: api_key,
@@ -6,61 +11,76 @@ const headers = {
 };
 
 // HTML : mypage 계좌관리 탭
-export const htmlMypage_Account = /* html */ `
-<div class="mypage__account">
-  <h2>계좌 관리</h2>
-  <div class="user__account">
-    <p class="total__balance"></p>
-    <ul></ul>
-    <button class="btn__create__account">계좌추가!</button>
-  </div>
-</div>
-<div class="create__account">
-  <div class="create__account__modal">
-    <div class="modal__container">
-      <h3>계좌 추가</h3>
+const handleAccountInitTemplate = () => {
+  const htmlMypage_Account = /* html */ `
+  <div class="mypage__account">
+    <h2>계좌 관리</h2>
+    <div class="user__account">
+      <p class="total__balance"></p>
       <ul></ul>
-      <div class="accountNumber">
-        <span>계좌 번호</span>
-        <input type="text" id="input__account" class="create__input" />
-      </div>
-      <div class="phoneNumber">
-        <span>전화 번호</span>
-        <input type="text" id="input__phone" class="create__input" />
-      </div>
-      <div class="modal__notice">
-        <p>· 계좌번호와 전화번호에는 - 구분이 없어야 합니다.</p>
-        <p>
-          · 은행 [] 안의 숫자를 모두 더하면 각 은행의 유효한 계좌번호
-          길이가 됩니다.
-        </p>
-      </div>
-      <div class="modal__button__create">
-        <button id="btnFinalCreate">추가</button>
-      </div>
-      <button id="btnCloseModal">X</button>
+      <button class="btn__create__account">계좌추가</button>
     </div>
   </div>
-</div>
-<div class="delete__account">
-  <div class="delete__account__modal">
-    <div class="modal__container">
-      <h3>계좌 삭제</h3>
-      <span>정말로 삭제 하시겠습니까?</span>
-      <div>
-        <button id="delete-ok">예</button>
-        <button id="delete-cancel">아니오</button>
+  <div class="create__account">
+    <div class="create__account__modal">
+      <div class="modal__container">
+        <h3>계좌 추가</h3>
+        <ul></ul>
+        <div class="accountNumber">
+          <span>계좌 번호</span>
+          <input type="text" id="input__account" class="create__input" />
+        </div>
+        <div class="phoneNumber">
+          <span>전화 번호</span>
+          <input type="text" id="input__phone" class="create__input" />
+        </div>
+        <div class="modal__notice">
+          <p>· 계좌번호와 전화번호에는 - 구분이 없어야 합니다.</p>
+          <p>
+            · 은행 [] 안의 숫자를 모두 더하면 각 은행의 유효한 계좌번호
+            길이가 됩니다.
+          </p>
+        </div>
+        <div class="modal__button__create">
+          <button id="btnFinalCreate">추가</button>
+        </div>
+        <button id="btnCloseModal">X</button>
       </div>
     </div>
   </div>
-</div>
-`;
+  <div class="delete__account">
+    <div class="delete__account__modal">
+      <div class="modal__container">
+        <h3>계좌 삭제</h3>
+        <span>정말로 삭제 하시겠습니까?</span>
+        <div>
+          <button id="delete-ok">예</button>
+          <button id="delete-cancel">아니오</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
 
-function renderPage(html) {
-  document.querySelector('.mypage__navigo__container').innerHTML = html;
-}
+  $('.mypage__navigo__container').innerHTML = htmlMypage_Account;
+};
 
-export async function initFuncAccount() {
+export const handleAccountPage = async () => {
+  if (getLoginStatus() === false) {
+    showAlertPlzLogin();
+    router.navigate('/login');
+    return;
+  }
+  await renderAccountPage();
+};
+
+const renderAccountPage = async () => {
+  renderPage(htmlMypage_Nav);
+  handleAccountInitTemplate();
+  await initFuncAccount();
+};
+
+async function initFuncAccount() {
   const active = document.querySelector('#mpAccount');
   active.parentElement.classList.add('active');
 
@@ -103,8 +123,6 @@ export async function initFuncAccount() {
     const bankCode = getUserSelectBank();
     createUserAccount(bankCode);
   });
-
-  // divLoadingEl.style.display = 'none';
 }
 
 // API : 은행 목록
@@ -152,8 +170,7 @@ const createUserAccount = async (bankCode) => {
   });
 
   if (res.ok) {
-    renderPage(htmlMypage_Account);
-    initFuncAccount();
+    renderAccountPage();
   }
 };
 
@@ -173,8 +190,9 @@ const deleteAccount = async (e) => {
   });
 
   if (res.ok) {
-    renderPage(htmlMypage_Account);
-    initFuncAccount();
+    // renderPage(htmlMypage_Account);
+    // initFuncAccount();
+    renderAccountPage();
   }
 
   const json = await res.json();

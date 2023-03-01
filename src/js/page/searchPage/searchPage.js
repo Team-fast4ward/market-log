@@ -14,7 +14,6 @@ const renderSearchedProductList = (title = '') => {
   const categoryProductListTemplate = title
     .map((item) => {
       const { id, price, thumbnail, title } = item;
-
       return `
     <li class="categoryPage__product--list" data-product-id="${id}">
       <a href="/product/${id}">
@@ -41,12 +40,15 @@ const renderSearchedProductList = (title = '') => {
 /** 검색한 제품이 없을 때 렌더링, 추천 검색어 클릭 -> 카테고리 페이지로 이동 */
 const searchPageNoSearchResultTemplate = `
   <div class="searchPage__noResult--container">
-    <span class="searchPage__noResult--inputValue"></span> 관련 상품이 없습니다.
-    추천 검색어: 
-    <a class="searchPage__noResult--button" href="/category/keyboards">키보드</a> 
-    <a class="searchPage__noResult--button" href="/category/keycaps">NuPhy</a>
-    <a class="searchPage__noResult--button" href="/category/switches">Xmas</a>
-    <a class="searchPage__noResult--button" href="/category/accessories">Nufolio</a>
+    <span class="searchPage__noResult--inputValue"></span>
+    <span>관련 상품이 없습니다.</span>
+    <span>추천 검색어</span>
+    <div class="searchPage__noResult--buttons">
+      <a class="searchPage__noResult--button" href="/category/keyboards">키보드</a>
+      <a class="searchPage__noResult--button" href="/category/keycaps">NuPhy</a>
+      <a class="searchPage__noResult--button" href="/category/switches">Xmas</a>
+      <a class="searchPage__noResult--button" href="/category/accessories">Nufolio</a>
+    </div>
   </div>
 `;
 
@@ -76,20 +78,21 @@ const handleSearchPageResult = async () => {
 };
 
 /** 검색창 폼 태그 새로고침 방지 */
-$('.header-main__search--form').addEventListener('submit', (e) => {
+$('.header-main__search--form').addEventListener('submit', async (e) => {
   e.preventDefault();
+  if (e.key === 'Enter') {
+    router.navigate('/products/search');
+    await handleSearchPageResult();
+  }
 });
 
 /** [모든 페이지]에서 제품 검색 버튼 'click' 이벤트 */
 $('.header-main__search--button').addEventListener('click', async (e) => {
-  e.preventDefault();
-  router.navigate('/products/search');
-  await handleSearchPageResult();
-  return;
+  // e.preventDefault();
 });
 
 /** [모든 페이지]에서 제품 검색 버튼 'Enter'이벤트 */
-$('.header-main__search--button').addEventListener('keypress', async (e) => {
+$('.header-main__search--input').addEventListener('keydown', async (e) => {
   if (e.key === 'Enter') {
     router.navigate('/products/search');
     await handleSearchPageResult();

@@ -1,14 +1,10 @@
-// @forward '../globals';
-
 // 버튼 클릭했을 때 효과
 @mixin btnEffect($backColor, $color: white) {
   &:hover,
   &:active {
     background-color: $backColor;
     color: $color;
-    cursor: pointer;
   }
-
   &:active {
     transform: scale(0.98);
   }
@@ -16,37 +12,18 @@
 
 // 장바구니, 구매하기 버튼 중복코드
 @mixin cartbuyBtn($color) {
+  border: 1px solid $color;
+  border-radius: 5px;
   width: 100%;
   padding: 14px 26px;
-  border: 1px solid $color;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-// body {
-//   width: 100%;
-//   min-width: 1540px;
-//   height: auto;
-//   justify-content: center;
-//   align-content: center;
-// }
-
-img {
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.header-container {
-  justify-content: center;
-  width: 100%;
+  color: $color;
 }
 
 // section
 .section {
   &__container {
-    display: flex;
-    justify-content: center;
-    width: 1400px;
+    // display: flex;
+    // justify-content: center;
     margin: 60px auto;
     display: grid;
     justify-content: center;
@@ -55,7 +32,6 @@ img {
   &__productDetail {
     display: flex;
     justify-content: center;
-
     img {
       width: 90%;
     }
@@ -66,57 +42,46 @@ img {
 .aside {
   &__productDetail {
     &-menu {
+      box-sizing: border-box;
+      margin: 10px 0;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
     }
-
     &--info {
       &-title {
-        width: 100%;
-        font-size: 24px;
+        margin-bottom: 25px;
+        font-size: 25px;
+        font-weight: 900;
       }
-
       &-sec {
-        margin-top: 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        &-price {
-          font-size: 20px;
-        }
+        font-size: 24px;
       }
-
       &-wishlistBtn {
         &:active {
           transform: scale(0.9);
         }
       }
       &-wishlistImg {
-        height: 26px;
+        height: 40px;
       }
-
       &-desc {
         margin-top: 16px;
+        line-height: 1.7;
       }
-
       &-tagLists {
         display: flex;
         gap: 6px;
         margin-top: 20px;
-
         &-tag {
-          padding: 6px;
-          color: #000;
+          padding: 6px 10px;
+          color: var(--logo-color);
           border: 1px solid var(--logo-color);
-          border-radius: 6px;
-          cursor: pointer;
-
-          &:hover,
-          &:active {
-            color: #fff;
-            background-color: var(--logo-color);
-          }
+          border-radius: 5px;
+          cursor: default;
         }
       }
     }
@@ -128,13 +93,11 @@ img {
       justify-content: space-between;
       align-items: center;
       font-weight: 700;
-
       &-btns {
         display: flex;
         align-items: center;
         gap: 24px;
       }
-
       &-btn {
         padding: 6px 10px;
         border: 1px solid var(--logo-color);
@@ -143,98 +106,32 @@ img {
         @include btnEffect(var(--logo-color), #fff);
       }
     }
-
     &--totalPrice {
       margin-top: 20px;
       display: flex;
       justify-content: space-between;
       font-weight: 700;
     }
-
     &--btns {
       margin-top: 40px;
       display: flex;
       gap: 10px;
       justify-content: space-around;
       text-align: center;
-
       &-cart {
         @include cartbuyBtn(var(--logo-color));
         @include btnEffect(var(--logo-color), #fff);
       }
-
       &-buy {
         @include cartbuyBtn(var(--logo-color));
         @include btnEffect(var(--logo-color), #fff);
       }
-
       &-soldOut {
         @include cartbuyBtn(var(--soldOut-color));
+        background-color: var(--logo-color);
+        color: #fff;
         cursor: not-allowed;
       }
-    }
-  }
-}
-
-.modal__addCart {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  width: 400px;
-  height: 300px;
-  overflow: hidden;
-  border: 1px solid var(--deps-blue);
-  background-color: #fff;
-  box-shadow: var(--box-shadow);
-
-  &-container {
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &--info {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    img {
-      height: 60px;
-    }
-    h4 {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 26px;
-    }
-  }
-
-  &--btns {
-    margin-top: 60px;
-    display: flex;
-    justify-content: center;
-    font-size: 16px;
-    gap: 16px;
-  }
-
-  &--btn {
-    padding: 10px 16px;
-    border: 1px solid var(--logo-color);
-    border-radius: 6px;
-
-    &:active,
-    &:hover {
-      background-color: var(--logo-color);
-      color: #fff;
-    }
-
-    &:active {
-      transform: scale(0.98);
-    }
-    a {
-      width: 100%;
-      height: 100%;
     }
   }
 }

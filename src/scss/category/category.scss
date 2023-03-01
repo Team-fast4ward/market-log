@@ -1,118 +1,109 @@
 @use '../globals/utils' as u;
 
 .categoryPage {
+  margin-top: 60px;
+  min-height: 450px;
+  height: 1500px; // 있어야 sticky 동작
   display: flex;
-  justify-content: center;
-  width: 1400px;
-  margin: 0 auto;
-  padding: 40px;
-
-  &__container {
-    display: flex;
-    justify-content: space-evenly;
-    width: 1300px;
-  }
+  position: relative;
 
   &__aside {
+    margin-top: 50px;
     width: 200px;
-    height: 100vh;
-    height: auto;
-
+    height: 500px;
+    position: sticky;
+    top: 15px;
     &--container {
+      border: 1px solid;
+      border-radius: 5px;
       display: flex;
       flex-direction: column;
+      justify-content: space-evenly;
       h4 {
-        margin: 0 auto;
+        margin: 20px auto 0;
+        font-size: 22.4px;
       }
     }
-
     &--wrapper {
+      margin: 20px 10px;
+      min-height: 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 30px 0 10px;
-      gap: 10px;
+      gap: 20px;
     }
-
     &--img {
       display: flex;
-      // flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
       a {
         display: flex;
         justify-content: center;
       }
       img {
-        width: 60%;
+        width: 120px;
+        height: 120px;
       }
     }
   }
-
   &__main {
-    width: 900px;
+    margin-left: 100px;
+    width: calc(100% - 200px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-
     &--container {
       display: flex;
       flex-direction: column;
       margin-bottom: 12px;
     }
-
     &--filter {
+      border-bottom: 2px solid #000;
+      height: 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 0 10px;
-      &-totalQty {
-      }
-
-      &-sort {
-      }
-
       &-select {
         padding: 6px 8px;
-        border: 1px solid var(--logo-color);
-        border-radius: 6px;
+        border: 1px solid #000;
+        border-radius: 5px;
       }
     }
   }
-
   &__product {
     &--lists {
       display: flex;
       flex-wrap: wrap;
-      gap: 13px;
+      justify-content: space-around;
+      position: relative;
+      min-height: 450px;
+      max-height: 1500px;
     }
     &--list {
-      border-radius: 6px;
-      padding: 3px;
-      &:hover {
-        transition: 0.5s ease, border 0.2s ease;
-        box-shadow: u.$boxShadow;
+      margin: 20px 5px;
+      a {
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #000;
       }
     }
     &--img {
       width: 280px;
-
+      height: 280px;
+      display: flex;
+      align-items: center;
       img {
         width: 100%;
-        border-radius: 16px;
-        margin-bottom: 10px;
       }
     }
-
     &--info {
-      color: #0c0c0c;
-      padding-top: 6px;
-      width: 276px;
+      box-sizing: border-box;
+      padding: 20px 4px 15px;
+      width: 100%;
+      font-size: 18px;
       &-title {
-        margin-bottom: 16px;
-      }
-      &-price {
+        padding: 0 0 10px 0;
+        font-weight: 600;
       }
     }
   }
@@ -120,7 +111,7 @@
 @mixin skeletonUI($width, $height) {
   opacity: 0.7;
   animation: skeleton-loading 0.5s linear infinite alternate;
-  border-radius: 6px;
+  border-radius: 5px;
   width: $width;
   height: $height;
 }
@@ -133,34 +124,29 @@
     background-color: hsl(200, 20%, 95%);
   }
 }
-
 .categoryPage {
   &__skeleton {
     &--img {
-      @include skeletonUI(260px, 260px);
+      @include skeletonUI(280px, 280px);
     }
     &--title {
       @include skeletonUI(100px, 40px);
     }
   }
 }
-
 .orderHistoryPage__skeleton {
-  @include skeletonUI(900px, 160px);
-  margin: 30px 0;
+  @include skeletonUI(980px, 172px);
+  margin: 25px 0;
 }
-
 .productDetail__skeleton {
   &--container {
     display: flex;
     margin: 100px 0;
   }
-
   &--img {
     margin-left: 200px;
     @include skeletonUI(500px, 500px);
   }
-
   &--aside {
     display: flex;
     flex-direction: column;
@@ -173,34 +159,32 @@
 }
 
 @mixin categoryPaginationBtn {
+  border: 1px solid;
+  border-radius: 5px;
   padding: 6px 10px;
-  border: 1px solid var(--logo-color);
-  border-radius: 6px;
   &:hover {
-    color: #fff;
-    background-color: var(--logo-color);
-  }
-  &:active {
-    transform: scale(0.95);
+    color: var(--logo-color);
   }
 }
 
 .categoryPage__pagination {
   &--btn {
-    @include categoryPaginationBtn();
+    @include categoryPaginationBtn;
     &-container {
       margin: 30px 0;
       display: flex;
       justify-content: center;
       gap: 20px;
     }
-
     &-next {
-      @include categoryPaginationBtn();
+      @include categoryPaginationBtn;
     }
-
     &-prev {
-      @include categoryPaginationBtn();
+      @include categoryPaginationBtn;
     }
+  }
+  button.active-btn {
+    border: 1px solid var(--logo-color);
+    border-radius: 50%;
   }
 }

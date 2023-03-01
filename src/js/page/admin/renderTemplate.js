@@ -1,4 +1,4 @@
-import searchPNG from '../../../../public/search.png';
+import searchPNG from '../../../../public/search.gif';
 
 import leftBtnSVG from '../../../../public/pagination-left.svg';
 import rightBtnSVG from '../../../../public/pagination-right.svg';

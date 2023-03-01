@@ -1,0 +1,81 @@
+.modal {
+  border: 1px solid var(--logo-color);
+  border-radius: 5px;
+  width: 300px;
+  height: 200px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  position: fixed;
+  top: 40vh;
+  left: 40vw;
+  .modal-text {
+    font-size: 18px;
+  }
+  .buttons {
+    display: flex;
+    gap: 20px;
+    button {
+      border: 1px solid var(--logo-color);
+      border-radius: 5px;
+      color: var(--logo-color);
+      padding: 10px 17px;
+    }
+    .modal_confirm-btn {
+      background-color: var(--logo-color);
+      color: #fff;
+    }
+  }
+}
+
+.modal__addCart {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  border: 1px solid var(--logo-color);
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  &-container {
+    box-sizing: border-box;
+    margin: auto;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    img {
+      height: 50px;
+    }
+    h4 {
+      font-size: 26px;
+    }
+  }
+  &--btns {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    a {
+      color: var(--logo-color);
+    }
+  }
+  &--btn {
+    padding: 10px 16px;
+    border: 1px solid var(--logo-color);
+    border-radius: 5px;
+    &:active,
+    &:hover {
+      background-color: var(--logo-color);
+      color: #fff;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}

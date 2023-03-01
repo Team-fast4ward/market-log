@@ -1,15 +1,16 @@
+import { $ } from '../utils/dom.js';
 import { base_url, api_key, user_name, admin_email } from '../db.js';
 import { router } from '../main.js';
+import { renderPage } from '../utils/render.js';
 const headers = {
   'content-type': 'application/json',
   apikey: api_key,
   username: user_name,
 };
-const $ = (selector) => document.querySelector(selector);
 const ulLoginHeaderEl = $('.header__user-login--ul');
 
 /** HTML : 로그인 페이지 템플릿 */
-export const htmlLogin = /* html */ `
+const htmlLogin = /* html */ `
   <div class="login__container">
     <h1 class="title">로그인</h1>
     <ul>
@@ -76,7 +77,7 @@ async function logout() {
 }
 
 /** API : 인증확인 */
-async function authorization() {
+export async function authorization() {
   const res = await fetch(`${base_url}/auth/me`, {
     method: 'POST',
     headers: {
@@ -92,7 +93,6 @@ async function authorization() {
 function displayUserName(user) {
   ulLoginHeaderEl.innerHTML = htmlHeaderLogout;
   $('#header__user-login-name').innerText = user.displayName;
-
   if (user.email === admin_email) {
     $('#btnMypage').innerHTML = `
       <strong id="header__user-login-name">관리자 페이지로 이동</strong>
@@ -117,7 +117,6 @@ export async function renderInitHeaderLogin() {
         <strong id="header__user-login-name">관리자 페이지로 이동</strong>
         `;
     }
-
     $('#btnlogout').addEventListener('click', async () => {
       const logoutJSON = await logout();
       if (logoutJSON === true) {
@@ -128,16 +127,19 @@ export async function renderInitHeaderLogin() {
     });
   }
 }
+export const handleLoginPage = () => {
+  renderPage(htmlLogin);
+  initFuncLogin();
+};
 
 /** 초기화면 Render시 Inititalize */
-export function initFuncLogin() {
-  ulLoginHeaderEl.innerHTML = htmlHeaderLogin;
-
+function initFuncLogin() {
   const btnLogin = $('.login-btn');
   btnLogin.addEventListener('click', async () => {
     let errMessage;
     try {
       const loginJSON = await login();
+      console.log(loginJSON);
       errMessage = loginJSON;
       displayUserName(loginJSON.user);
       localStorage.setItem('token', loginJSON.accessToken);
@@ -146,10 +148,19 @@ export function initFuncLogin() {
       alert(errMessage);
     }
   });
+
   const inputPW = $('#inputPW');
   inputPW.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') {
       btnLogin.click();
     }
   });
+}
+
+export function getLoginStatus() {
+  return localStorage.getItem('token') ? true : false;
+}
+export function showAlertPlzLogin() {
+  alert('로그인이 필요한 서비스입니다');
+  router.navigate('/login');
 }

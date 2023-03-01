@@ -5,14 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Market.log | MainPage</title>
+    <title>market.log</title>
     <!-- scss -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-    />
-    <!-- <link rel="stylesheet" href="./src/scss/main.scss" /> -->
-    <!-- <link rel="stylesheet" href="./src/scss/jaehaForward/jaeha.scss" /> -->
     <link rel="stylesheet" href="./src/scss/index.scss" />
     <!-- 다음 우편번호 찾기 api -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -40,17 +34,14 @@
           </li> -->
           </ul>
         </nav>
-
         <nav class="header-main">
           <a class="header-main__home-link" href="/" data-navigo>
             <img
               class="header-main__logo"
-              src="./public/mainLogo.svg"
+              src="./public/logo.png"
               alt="main logo"
             />
-            <h1 class="header-main__company-name">마켓로그</h1>
           </a>
-
           <div class="header-main__search">
             <form class="header-main__search--form">
               <input
@@ -58,31 +49,38 @@
                 placeholder="검색어를 입력해주세요."
               />
               <button class="header-main__search--button">
-                <img src="./public/search.png" alt="search button" />
+                <img src="./public/search.gif" alt="search button" />
               </button>
+              <img
+                class="header-main__search--close-button nodisplay"
+                src="./public/x.png"
+                alt="close button"
+              />
             </form>
           </div>
-
           <div class="header-main__links">
-            <a href="/admin" data-navigo
+            <!-- <a href="/admin" data-navigo
               ><img
                 class="header-main__links-img"
                 src="./public/hearted.svg"
                 alt="관리자"
-            /></a>
-            <a href="/mypage/wishlist" data-navigo
+            /></a> -->
+            <a
+              class="header-main__links--wishlist"
+              href="/mypage/wishlist"
+              data-navigo
               ><img
                 class="header-main__links-img"
-                src="./public/hearted.svg"
+                src="./public/emptyHeart.svg"
                 alt="찜하기"
             /></a>
-            <a href="/cart" data-navigo
+            <a class="header-main__links--cart" href="/cart" data-navigo
               ><img
                 class="header-main__links-img"
                 src="./public/cart.svg"
                 alt="카트"
             /></a>
-            <a href="/mypage" data-navigo
+            <a class="header-main__links--mypage" href="/mypage" data-navigo
               ><img
                 class="header-main__links-img"
                 src="./public/member.svg"
@@ -90,7 +88,6 @@
             /></a>
           </div>
         </nav>
-
         <nav class="header-nav__category">
           <ul class="header-nav__category--lists">
             <a href="/category/keyboards" data-navigo>
@@ -142,9 +139,8 @@
         <div class="footer-third footer-item">
           <div>
             <h6>Get in touch</h6>
-            <span
-              ><img src="./public/footerImg/email.svg" alt="" /> Email us</span
-            >
+
+            <span>help@marketlog.com</span>
           </div>
           <div>
             <h6>Follow us</h6>
@@ -249,7 +245,6 @@
                 alt=""
               />
             </div>
-            <div class="footer-cs-center__email">help@marketlog.co.kr</div>
           </div>
         </div>
       </div>
@@ -266,16 +261,14 @@
     <!-- 장바구니 modal -->
     <div class="modal__addCart">
       <div class="modal__addCart-container">
-        <div class="modal__addCart--info">
-          <img src="./public/cart.svg" alt="장바구니 추가 완료" />
-          <h4>장바구니에 추가되었습니다.</h4>
-        </div>
+        <img src="./public/cart.svg" alt="장바구니 추가 완료" />
+        <h4>장바구니에 추가되었습니다.</h4>
         <div class="modal__addCart--btns">
           <a class="modal__addCart--btn modal-keepShopping"
             ><button>계속 쇼핑하기</button></a
           >
           <a href="/cart" data-navigo class="modal__addCart--btn goToCart"
-            ><button>장바구니 바로가기</button></a
+            ><button>장바구니가기</button></a
           >
         </div>
       </div>
@@ -285,5 +278,6 @@
     <div class="alertModal">
       <div class="alertModal__container"></div>
     </div>
+    <div class="modal-container"></div>
   </body>
 </html>

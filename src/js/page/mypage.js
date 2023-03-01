@@ -1,6 +1,9 @@
 // dotenv 사용 예시
-import chevronrightSVG from '../../../public/chevronright.svg';
-const $ = (selector) => document.querySelector(selector);
+import { paginationRight } from '../importIMGFiles.js';
+import { router } from '../main.js';
+import { renderPage } from '../utils/render.js';
+import { getLoginStatus, showAlertPlzLogin } from './login.js';
+import { paginationRight } from '../importIMGFiles';
 let navliList;
 
 /** HTML : mypage nav 목록 */
@@ -13,22 +16,22 @@ export const htmlMypage_Nav = /* html */ `
         <ul>
           <li>
             <a href="/mypage/order" data-navigo id="mpOrderHistory">주문 내역
-              <img src="${chevronrightSVG}" alt="chevronright">
+              <img src="${paginationRight}" alt="chevronright">
             </a>
           </li>
           <li>
             <a href="/mypage/account" data-navigo id="mpAccount">계좌 관리
-              <img src="${chevronrightSVG}" alt="chevronright">
+              <img src="${paginationRight}" alt="chevronright">
             </a>
           </li>
           <li>
-            <a href="/mypage/wishlist" data-navigo id="mpMyHeart">찜한 상품
-              <img src="${chevronrightSVG}" alt="chevronright">
+            <a href="/mypage/wishlist" data-navigo id="mpWishList">찜한 상품
+              <img src="${paginationRight}" alt="chevronright">
             </a>
           </li>
           <li>
-            <a href="/mypage/myPersonalInfoModify" data-navigo id="mpMyPersonalInfoModify">개인 정보 수정
-              <img src="${chevronrightSVG}" alt="chevronright">
+            <a href="/mypage/editPersonalInfo" data-navigo id="mpEditPersonalInfo">개인 정보 수정
+              <img src="${paginationRight}" alt="chevronright">
             </a>
           </li>
         </ul>
@@ -38,18 +41,19 @@ export const htmlMypage_Nav = /* html */ `
 </div>
 `;
 
-/** 초기화면 Render시 Inititalize */
-export function initFuncMypage() {}
-
-/** mypage 영역을 Render */
-export function renderMyPageNav(html) {
-  $('.app').innerHTML = htmlMypage_Nav;
-  $('.app').querySelector('.mypage__navigo__container').innerHTML = html;
-  resetNavbarActive();
+export function handleMyPage() {
+  if (getLoginStatus() === false) {
+    showAlertPlzLogin();
+    router.navigate('/login');
+    return;
+  } else {
+    renderPage(htmlMypage_Nav);
+    router.navigate('mypage/order');
+  }
 }
 
 /** mypage nav탭 선택시 영역 acitve */
 export const resetNavbarActive = () => {
-  navliList = document.querySelectorAll('.mypage__navbar nav ul li a');
+  navliList = document.querySelectorAll('.mypage__navbar nav ul li');
   navliList?.forEach((navli) => navli.classList.remove('active'));
 };

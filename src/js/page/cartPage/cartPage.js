@@ -143,7 +143,7 @@ export const renderCartList = (storage) => {
           <button class="cart-addQtyBtn">+</button>
         </div>
         <span class="cart__item--price cartProductTotalPrice">${price.toLocaleString()} 원</span>
-        <button class="cart__item--deleteBtn cartProductDeleteBtn">삭제</button>
+        <div class="btn-wrap"><button class="cart__item--deleteBtn cartProductDeleteBtn">삭제</button></div>
       </div>
     </li>
     `;

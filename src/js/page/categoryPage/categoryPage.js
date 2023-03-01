@@ -8,6 +8,8 @@ import {
   nufolio,
   twilight,
   xmas,
+  paginationLeft,
+  paginationRight,
 } from '../../importIMGFiles.js';
 import { getAllProducts, getDetailProduct } from '../../api.js';
 import { recentViewStore } from '../../store/recentViewStore.js';
@@ -19,7 +21,7 @@ import { recentViewStore } from '../../store/recentViewStore.js';
 /** 카테고리 페이지 초기 템플릿 */
 export const renderInitCategoryPage = `
   <div class="categoryPage">
-    <div class="categoryPage__container">
+    
       <!-- aside -->
       <aside class="categoryPage__aside">
         <div class="categoryPage__aside--container categoryPageSwiper">
@@ -45,7 +47,7 @@ export const renderInitCategoryPage = `
         <ul class="categoryPage__product--lists"></ul>
         <div class="categoryPage__pagination--btn-container"></div>
       </div>
-    </div>
+    
   </div>
 `;
 
@@ -222,7 +224,6 @@ export const handleCategoryPage = async (i) => {
       );
     });
 };
-
 /*-----------------------------------*\
   #pagination
 \*-----------------------------------*/
@@ -258,18 +259,16 @@ const categoryUtilInit = async (i) => {
 const categoryUtilPaginate = (list) => {
   const itemsPerPage = 9;
   const numberOfPages = Math.ceil(list.length / itemsPerPage);
-
   const newList = Array.from({ length: numberOfPages }, (_, index) => {
     const start = index * itemsPerPage;
 
     return list.slice(start, start + itemsPerPage);
   });
-
   return newList;
 };
 
 /** 카테고리 페이지 페이지네이션 버튼 */
-const categoryUtilDisplayButtons = (container, pages, activeIndex) => {
+const categoryUtilDisplayButtons = () => {
   let categoryUtilBtns = pages.map((_, pageIndex) => {
     return `
     <button class="categoryPage__pagination--btn ${
@@ -280,16 +279,16 @@ const categoryUtilDisplayButtons = (container, pages, activeIndex) => {
   });
 
   categoryUtilBtns.push(
-    `<button class="categoryPage__pagination--btn-next">다음</button>`,
+    `<button class="categoryPage__pagination--btn-next">${paginationRight}</button>`,
   );
   categoryUtilBtns.unshift(
-    `<button class="categoryPage__pagination--btn-prev">이전</button>`,
+    `<button class="categoryPage__pagination--btn-prev">${paginationLeft}</button>`,
   );
   container.innerHTML = categoryUtilBtns.join('');
 };
 
 /** prev, next, 페이지네이션 버튼 핸들링 이벤트 */
-$('.app').addEventListener('click', (e) => {
+$('.app')?.addEventListener('click', (e) => {
   if (e.target.classList.contains('categoryPage__pagination--btn-container'))
     return;
 

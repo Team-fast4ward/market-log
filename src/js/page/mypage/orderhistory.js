@@ -1,7 +1,19 @@
 import { $ } from '../../utils/dom.js';
 import { reload } from '../../importIMGFiles.js';
 import { renderPage } from '../../utils/render.js';
-import { calendar, exclamationmark } from '../../importIMGFiles.js';
+import {
+  modalOrderCancel,
+  modalOrderCancelFix,
+  modalOrderFix,
+  modalOrderFixFix,
+} from '../modal/modalTemplates.js';
+import {
+  calendar,
+  exclamationmark,
+  cartSVG,
+  paginationLeft,
+  paginationRight,
+} from '../../importIMGFiles.js';
 import {
   getAllTransactions,
   cancelTransactionAPI,
@@ -64,41 +76,13 @@ export const renderInitMypageTemplate = `
 `;
 
 /** 구매내역 초기 템플릿 */
-export const handleOrderHistoryInitTemplate = () => {
+export const handleOrderHistoryInitTemplate = async () => {
   const renderOrderHistoryPageInitTemplate = `
   <div class="mypage__orderhistory">
     <h2>주문 내역</h2>
     <div class="calendar-box">
-      <input class="calendar-date"></input>
-      <img class="calendar-icon icon icon-tabler icon-tabler-calendar-event" src="${calendar}"
-        alt="calendar icon">
-      <button><img src="${reload}" alt="reload icon"></button>
-      <div class="calendar nodisplay">
-        <div class="wrapper">
-          <div class="curr-date ">
-            <span></span>
-            <span class="material-symbols-outlined" id="prev">
-              chevron_left
-            </span>
-            <span class="material-symbols-outlined" id="next">
-              chevron_right
-            </span>
-          </div>
-          <div class="curr-dates">
-            <ul class="weeks">
-              <li>Sun</li>
-              <li>Mon</li>
-              <li>Tue</li>
-              <li>Wed</li>
-              <li>Thu</li>
-              <li>Fri</li>
-              <li>Sat</li>
-            </ul>
-            <ul class="days">
-            </ul>
-          </div>
-        </div>
-      </div>
+      <input class="calendar-date" type="date"></input>
+      <button><img class="orderhistory_reload-btn" src="${reload}" alt="reload icon"></button>
     </div>
     <div class="products-container">
       <div class="nocontent-box nodisplay">
@@ -124,7 +108,6 @@ const renderOrderedProductList = (orderedItems) => {
     .map((item) => {
       const { detailId, product, timePaid, done, isCanceled } = item;
       const { productId, title, price, thumbnail } = product;
-
       return `
       <li class="product orderHistory__list" data-product-id="${productId}" data-detail-id="${detailId}">
         <img src="${thumbnail}" alt="${title}" class="product--img orderHistory__list--img" />
@@ -139,9 +122,15 @@ const renderOrderedProductList = (orderedItems) => {
             )}</div>
           </div>
           <span class="order-status orderHistory__list--orderStatus">${
-            done ? '구매 확정' : isCanceled ? '구매 취소' : '대기'
+            done ? '주문 확정' : isCanceled ? '주문 취소' : '대기'
           }</span>
-          <span>구매 확정 이후에는 주문 취소가 불가능합니다.</span>
+          <span style="font-size:18px;">${
+            done
+              ? '주문이 확정되었습니다.'
+              : isCanceled
+              ? '주문이 취소되었습니다'
+              : '주문 확정 이후에는 주문 취소가 불가능합니다.'
+          }</span>
           <span class="orderHistory__list--confirmed-order"></span>
         </div>
         <div class="buttons orderHistory__list--buttons">
@@ -151,7 +140,6 @@ const renderOrderedProductList = (orderedItems) => {
     `;
     })
     .join('');
-
   $('.orderHistory__lists').innerHTML = orderedProductListTemplate;
 };
 
@@ -166,7 +154,6 @@ const renderSkeletonUIinOrderHistoryPage = () => {
       return v;
     })
     .join('');
-
   $('.orderHistory__lists').innerHTML = skeletonUI12;
 };
 
@@ -191,7 +178,6 @@ const renderOrderedListPage = async () => {
   renderSkeletonUIinOrderHistoryPage();
   const transactionArr = await getAllTransactions();
   console.log('transactionArr', transactionArr);
-
   // 주문한 제품 없을 경우
   if (transactionArr.length === 0) {
     emptyOrderHistory();
@@ -200,34 +186,86 @@ const renderOrderedListPage = async () => {
     // 주문한 제품 있을 경우
     // renderOrderedProductList(transactionArr);
     orderHistoryUtilInit();
+
+    // [주문내역 페이지] 캘린더
+
+    // [주문내역 페이지] 새로고침
+    await $('.orderhistory_reload-btn').addEventListener('click', () => {
+      window.location.reload();
+    });
     // return;
   }
 };
 
-/** [주문 내역 페이지] 구매확정/취소 버튼 클릭 이벤트 */
+// [주문 내역 페이지] 구매확정/취소 버튼 클릭 이벤트 */
 $('.app').addEventListener('click', async (e) => {
   const detailId = e.target.closest('li')?.dataset.detailId;
+  //주문 확정 버튼 눌렀을 때
   if (e.target.classList.contains('orderHistory__list--confirmBtn')) {
-    confirmTransactionAPI(detailId);
-    e.target
-      .closest('li')
-      .querySelector('.orderHistory__list--confirmed-order').innerHTML =
-      '구매가 확정되었습니다.';
-    $('.app').querySelector('.orderHistory__list--buttons').style.display =
-      'none';
-    return;
+    // 주문 확정 첫번째 모달창
+    $('.modal-container').innerHTML = modalOrderFix;
+    $('.modal_confirm-btn').addEventListener('click', async () => {
+      // 주문 확정 두번째 모달창
+      await confirmTransactionAPI(detailId);
+      console.log('api 전송');
+      e.target
+        .closest('li')
+        .querySelector('.orderHistory__list--confirmed-order').innerHTML =
+        '구매가 확정되었습니다.';
+      e.target
+        .closest('li')
+        .querySelector('.orderHistory__list--buttons').style.display = 'none';
+      $('.modal-container').innerHTML = modalOrderFixFix;
+      $('.modal_cancel-btn').style.display = 'none';
+      $('.modal_container').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal_confirm-btn')) {
+          $('.modal-container').innerHTML = '';
+        }
+      });
+    });
+    //첫 번쨰 모달에서 취소버튼 눌렀을 떄(창닫기)
+    $('.modal_cancel-btn').addEventListener('click', (e) => {
+      if (e.target === $('.modal_cancel')) {
+        $('.modal-container').innerHTML = '';
+      }
+    });
   }
 
-  if (e.target.classList.contains('orderHistory__list--cancelBtn')) {
-    cancelTransactionAPI(detailId);
-    e.target
-      .closest('li')
-      .querySelector('.orderHistory__list--confirmed-order').innerHTML =
-      '구매가 취소되었습니다.';
-    $('.app').querySelector('.orderHistory__list--buttons').style.display =
-      'none';
-
-    return;
+  //주문 취소 버튼 눌렀을 때
+  else if (e.target.classList.contains('orderHistory__list--cancelBtn')) {
+    //주문 취소 첫번째 모달
+    $('.modal-container').innerHTML = modalOrderCancel;
+    $('.modal_confirm-btn').addEventListener('click', async () => {
+      // 주문 취소 두번째 모달
+      await cancelTransactionAPI(detailId);
+      console.log('api 전송');
+      e.target
+        .closest('li')
+        .querySelector('.orderHistory__list--confirmed-order').innerHTML =
+        '구매가 취소되었습니다.';
+      e.target
+        .closest('li')
+        .querySelector('.orderHistory__list--buttons').style.display = 'none';
+      $('.modal-container').innerHTML = modalOrderCancelFix;
+      $('.modal_cancel-btn').style.display = 'none';
+      $('.modal_confirm-btn').addEventListener('click', () => {
+        $('.modal-container').innerHTML = '';
+      });
+      return;
+    });
+    $('.modal_cancel-btn').addEventListener('click', () => {
+      $('.modal-container').innerHTML = '';
+      return;
+    });
+    // cancelTransactionAPI(detailId);
+    // e.target
+    //   .closest('li')
+    //   .querySelector('.orderHistory__list--confirmed-order').innerHTML =
+    //   '구매가 취소되었습니다.';
+    // e.target
+    //   .closest('li')
+    //   .querySelector('.orderHistory__list--buttons').style.display = 'none';
+    // return;
   }
 });
 
@@ -257,7 +295,6 @@ const orderHistoryUtilSetupUI = () => {
 const orderHistoryUtilInit = async () => {
   const orderHistory = await getAllTransactions();
   orderHistoryUtilPages = orderHistoryUtilPaginate(orderHistory);
-
   orderHistoryUtilSetupUI();
 };
 
@@ -265,17 +302,14 @@ const orderHistoryUtilInit = async () => {
 const orderHistoryUtilPaginate = (list) => {
   const itemsPerPage = 10;
   const numberOfPages = Math.ceil(list.length / itemsPerPage);
-
   const newList = Array.from({ length: numberOfPages }, (_, index) => {
     const start = index * itemsPerPage;
-
     return list.slice(start, start + itemsPerPage);
   });
-
   return newList;
 };
 
-/** 주문내역 페이지 페이지네이션 버튼 */
+/** [주문내역 페이지] 페이지네이션 버튼 */
 const orderHistoryUtilDisplayButtons = (container, pages, activeIndex) => {
   let utilBtns = pages.map((_, pageIndex) => {
     return `
@@ -285,12 +319,11 @@ const orderHistoryUtilDisplayButtons = (container, pages, activeIndex) => {
       ${pageIndex + 1}
     </button>`;
   });
-
   utilBtns.push(
-    `<button class="order-history__pagination--btn-next">다음</button>`,
+    `<button class="order-history__pagination--btn-next"><img src="${paginationRight}"/></button>`,
   );
   utilBtns.unshift(
-    `<button class="order-history__pagination--btn-prev">이전</button>`,
+    `<button class="order-history__pagination--btn-prev"><img src="${paginationLeft}"/></button>`,
   );
   container.innerHTML = utilBtns.join('');
 };
@@ -299,12 +332,10 @@ const orderHistoryUtilDisplayButtons = (container, pages, activeIndex) => {
 $('.app').addEventListener('click', (e) => {
   if (e.target.classList.contains('order-history__pagination--btnsContainer'))
     return;
-
   if (e.target.classList.contains('order-history__pagination--btn')) {
     orderHistoryUtilIndex = Number(e.target.dataset.index);
     orderHistoryUtilSetupUI();
   }
-
   if (e.target.classList.contains('order-history__pagination--btn-next')) {
     orderHistoryUtilIndex++;
     if (orderHistoryUtilIndex > orderHistoryUtilPages.length - 1) {
@@ -320,3 +351,5 @@ $('.app').addEventListener('click', (e) => {
     orderHistoryUtilSetupUI();
   }
 });
+
+//캘린더로 주문내역 불러오기

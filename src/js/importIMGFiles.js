@@ -7,7 +7,6 @@ import air96 from '../../public/mainPageIMG/air96.png';
 import nufolio from '../../public/mainPageIMG/nufolio.png';
 import twilight from '../../public/mainPageIMG/twilight.png';
 import xmas from '../../public/mainPageIMG/xmas.png';
-import heart from '../../public/heart.svg';
 import addHeart from '../../public/addHeart.svg';
 import hearted from '../../public/hearted.svg';
 import removeHeart from '../../public/removeHeart.svg';
@@ -20,6 +19,7 @@ import paginationLeft from '../../public/pagination-left.svg';
 import paginationRight from '../../public/pagination-right.svg';
 import chevronrightSVG from '../../public/chevronright.svg';
 import cartSVG from '../../public/cart.svg';
+import outlink from '../../public/outlink.png';
 
 export {
   air60,
@@ -44,4 +44,5 @@ export {
   paginationRight,
   chevronrightSVG,
   cartSVG,
+  outlink,
 };

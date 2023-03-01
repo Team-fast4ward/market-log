@@ -1,0 +1,25 @@
+.error {
+  &-page {
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &-message {
+    &--container {
+      text-align: center;
+    }
+    &--title {
+      margin-bottom: 40px;
+      font: {
+        size: 50px;
+        weight: 900;
+      }
+    }
+    &--desc {
+      margin-bottom: 10px;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+  }
+}

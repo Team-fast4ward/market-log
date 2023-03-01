@@ -115,10 +115,33 @@ export const renderMainPageTemplate = `
 </div>
 `;
 
+// 버튼으로 해당 페이지 이동
 $('.app').addEventListener('click', (e) => {
   if (e.target.classList.contains('mainPage__hero--btn')) {
     router.navigate('/category/keyboards');
   }
+});
+
+// [메인페이지] 헤더 서치바
+const headerSearchInputEl = document.querySelector(
+  '.header-main__search--input',
+);
+const headerSearchBtnEl = document.querySelector(
+  '.header-main__search--button',
+);
+const headerSearchCloseBtnEl = document.querySelector(
+  '.header-main__search--close-button',
+);
+$('.header-main__search--button').addEventListener('click', () => {
+  $('.header-main__search--input').classList.add('active');
+  $('.header-main__search--button').style.display = 'none';
+  $('.header-main__search--close-button').style.display = 'block';
+});
+
+$('.header-main__search--close-button').addEventListener('click', () => {
+  $('.header-main__search--input').classList.remove('active');
+  $('.header-main__search--close-button').style.display = 'none';
+  $('.header-main__search--button').style.display = 'block';
 });
 
 /** router on '/' 핸들링 함수 */

@@ -6,7 +6,7 @@ import { $ } from '../../utils/dom.js';
 import { renderPage } from '../../utils/render.js';
 import { getDetailOrderProduct } from '../../api.js';
 import { formatPrice, formatDate } from '../../utils/format.js';
-
+import { paginationRight } from '../../importIMGFiles.js';
 /** 마이 페이지 mypage__navigo__container 초기 템플릿 */
 const renderInitMypageTemplate = `
       <div class="mypage__app">
@@ -18,25 +18,25 @@ const renderInitMypageTemplate = `
                 <li>
                   <a href="/mypage/order" data-navigo
                     >주문내역
-                    <img src="./public/chevronright.svg" alt="chevronright" />
+                    <img src="${paginationRight}" alt="chevronright" />
                   </a>
                 </li>
                 <li>
                   <a href="/mypage/account" data-navigo
                     >계좌 관리
-                    <img src="./public/chevronright.svg" alt="chevronright" />
+                    <img src="${paginationRight}" alt="chevronright" />
                   </a>
                 </li>
                 <li>
                   <a href="/mypage/wishlist" data-navigo
                     >찜한 상품
-                    <img src="./public/chevronright.svg" alt="chevronright" />
+                    <img src="${paginationRight}" alt="chevronright" />
                   </a>
                 </li>
                 <li>
                   <a href="/mypage/myPersonalInfoModify" data-navigo
                     >개인 정보 수정
-                    <img src="./public/chevronright.svg" alt="chevronright" />
+                    <img src="${paginationRight}" alt="chevronright" />
                   </a>
                 </li>
               </ul>

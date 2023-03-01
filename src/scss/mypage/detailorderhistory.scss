@@ -8,22 +8,18 @@
       &-date {
         margin-right: 10px;
       }
-
-      &-id {
-      }
     }
   }
-
   &__product {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid var(--soldOut-color);
-    border-radius: 6px;
-    margin-bottom: 30px;
-
+    border-radius: 5px;
+    margin-bottom: 60px;
     &--order-status {
       margin-right: 80px;
+      font-size: 20px;
       color: var(--soldOut-color);
     }
     &--container {
@@ -32,40 +28,34 @@
       gap: 20px;
       padding: 10px;
     }
-
     &--image {
       width: 140px;
       height: 140px;
       object-fit: contain;
     }
-
     &--info {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      font-size: 20px;
     }
   }
-
   &__payment {
     &--detail {
       display: flex;
       flex-direction: column;
       gap: 10px;
       justify-content: flex-start;
-
       &-container {
-        margin-top: 20px;
+        margin: 20px 0 70px;
         display: flex;
         justify-content: space-between;
         padding: 10px;
         border: 1px solid var(--soldOut-color);
-        border-radius: 6px;
+        border-radius: 5px;
       }
-
       &-type {
         color: var(--soldOut-color);
-      }
-      &-bank {
       }
       &-price-container {
         display: flex;

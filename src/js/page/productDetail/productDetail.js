@@ -27,7 +27,6 @@ export const storeWishList = (id, count, thumbnail, title, pricePerOne) => {
   const existingItem = wishListStore
     .getLocalStorage()
     .find((item) => item.id === id);
-
   if (!existingItem) {
     wishListArr.unshift({ id, count, thumbnail, title, pricePerOne });
     wishListStore.setLocalStorage(wishListArr);

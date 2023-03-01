@@ -1,0 +1,73 @@
+// 비밀번호 입력 전
+.mypage__editPersonalInfo {
+  padding-top: 30px;
+  &__notice {
+    margin: 15px 0;
+    font-weight: 600;
+    h4 {
+      padding: 0 0 15px;
+      font-size: 20px;
+    }
+    p {
+      color: var(--soldOut-color);
+    }
+  }
+  &__inputPassWord {
+    margin: 0;
+    #inputPW {
+      box-sizing: border-box;
+      border: 1px solid var(--division-line);
+      border-radius: 5px;
+      width: 100%;
+      padding: 15px;
+    }
+    #btnSubmit {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100px;
+      height: 30px;
+      margin: 30px auto 0;
+      padding: 5px;
+      border-radius: 5px;
+      color: #fff;
+      background-color: var(--logo-color);
+    }
+  }
+}
+// 비밀번호 입력 후
+.edit_PersonalInfo {
+  .edit_PersonalInfo_grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: repeat(5, 80px);
+    align-items: center;
+    padding: 30px;
+    label {
+      margin-right: 30px;
+      width: 200px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    input {
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #dadce0;
+    }
+  }
+  .buttonBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    button {
+      text-align: center;
+      width: 100px;
+      height: 30px;
+      padding: 5px;
+      border-radius: 5px;
+      color: #fff;
+      background-color: var(--logo-color);
+    }
+  }
+}
