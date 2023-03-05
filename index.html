@@ -5,16 +5,35 @@
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>market.log</title>
+    <title>market.log - 개발자들을 위한 마켓</title>
+    <!-- meta tag -->
+    <meta name="description" content="마켓로그에서 다양한 상품을 만나 보세요" />
+    <meta property="og:title" content="마켓로그" />
+    <meta property="og:url" content="https://market-log.vercel.app/" />
+    <meta property="og:image" content="./public/mainLogo.svg" />
+    <meta
+      property="og:description"
+      content="마켓로그에서 다양한 상품을 만나 보세요"
+    />
+    <meta
+      name="twitter:card"
+      content="마켓로그에서 다양한 상품을 만나 보세요"
+    />
+    <meta name="twitter:title" content="마켓로그" />
+    <meta name="twitter:url" content="https://market-log.vercel.app/" />
+    <meta name="twitter:image" content="./public/mainLogo.svg" />
+    <meta
+      name="twitter:description"
+      content="마켓로그에서 다양한 상품을 만나 보세요"
+    />
     <!-- scss -->
     <link rel="stylesheet" href="./src/scss/index.scss" />
-    <!-- 다음 우편번호 찾기 api -->
+    <!-- kakao 우편번호 찾기 api -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0b1e824b9a035e3d1b19dfe79fcceda9&libraries=services"></script>
-    <!-- js -->
-    <script type="module" src="./src/js/main.js" defer></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=26e53c394ca0000e128fe5483eb64985&libraries=services"></script>
+    <!-- javascript -->
+    <script type="module" src="./src/ts/main.ts" defer></script>
   </head>
-
   <body>
     <div class="body">
       <!-- 공통 헤더 시작 -->
@@ -65,12 +84,14 @@
                   src="./public/emptyHeart.svg"
                   alt="찜하기"
               /></a>
+              <span class="header__wishlist--qty">1</span>
               <a class="header-main__links--cart" href="/cart" data-navigo
                 ><img
                   class="header-main__links-img"
                   src="./public/cart.svg"
                   alt="카트"
               /></a>
+              <span class="header__cart--qty"></span>
               <a class="header-main__links--mypage" href="/mypage" data-navigo
                 ><img
                   class="header-main__links-img"
@@ -101,7 +122,12 @@
       <!-- 메인페이지 라우터 -->
       <main class="app"></main>
       <div class="loadingGif">
-        <img src="public/spinner.svg" alt="로딩.." id="img-loadingGIF" />
+        <img
+          style="width: 100px; height: 100px"
+          src="public/spinner.svg"
+          alt="로딩.."
+          id="img-loadingGIF"
+        />
       </div>
       <!-- 메인페이지 끝 -->
       <footer>

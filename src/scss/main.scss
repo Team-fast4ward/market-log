@@ -85,7 +85,7 @@ button:active {
         font-size: 20px;
         transition: all 0.3s;
         &.active {
-          width: 700px;
+          width: 800px;
           border: 1px solid var(--division-line);
         }
         &:focus {
@@ -118,6 +118,34 @@ button:active {
       }
     }
   }
+
+  @mixin headerQty($translateX) {
+    position: absolute;
+    transform: translateX($translateX) translateY(-10%);
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--deps-blue);
+    border-radius: 50%;
+    text-align: center;
+    background-color: var(--deps-blue);
+    color: #fff;
+    font-weight: 900;
+  }
+  &__wishlist {
+    position: relative;
+    width: 34px;
+    &--qty {
+      @include headerQty(-100px);
+    }
+  }
+  &__cart {
+    position: relative;
+
+    &--qty {
+      @include headerQty(-40px);
+    }
+  }
+
   &-nav {
     &__category {
       &--lists {

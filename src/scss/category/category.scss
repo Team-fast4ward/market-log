@@ -18,10 +18,12 @@
       border-radius: 5px;
       display: flex;
       flex-direction: column;
-      justify-content: space-evenly;
+      padding: 20px 0;
+      border: 1px solid var(--logo-color);
+      border-radius: 16px;
       h4 {
-        margin: 20px auto 0;
-        font-size: 22.4px;
+        margin: 0 auto;
+        border-bottom: 1px solid;
       }
     }
     &--wrapper {
@@ -84,7 +86,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        color: #000;
       }
     }
     &--img {

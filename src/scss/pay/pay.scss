@@ -164,6 +164,9 @@
       &--name {
         @include alignGap10px();
         margin-bottom: 10px;
+        h6 {
+          margin-right: 16px;
+        }
         &-input {
         }
       }
