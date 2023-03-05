@@ -1,5 +1,5 @@
 // common
-body {
+.body {
   width: 1500px;
   margin: 0 auto;
 }
@@ -63,9 +63,9 @@ button:active {
     grid-template-columns: 1.5fr 4fr 0.7fr;
     align-items: center;
     &__logo {
-      margin-top: 20px;
+      margin-bottom: 20px;
       padding: 0 30px 0;
-      height: 120px;
+      height: 80px;
     }
     &__search {
       &--form {

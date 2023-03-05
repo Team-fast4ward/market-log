@@ -16,268 +16,255 @@
   </head>
 
   <body>
-    <!-- 공통 헤더 시작 -->
-    <header class="header-container">
-      <div class="header-banner">
-        <a
-          href="https://github.com/Team-fast4ward/market-log"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Follow our Github →</a
-        >
-      </div>
-      <div class="header">
-        <nav class="header__user-login">
-          <ul class="header__user-login--ul">
-            <!-- <li class="header__user-login--li">
-            <a href="/login" data-navigo id="btnlogin"> 로그인 </a>
-          </li> -->
-          </ul>
-        </nav>
-        <nav class="header-main">
-          <a class="header-main__home-link" href="/" data-navigo>
-            <img
-              class="header-main__logo"
-              src="./public/logo.png"
-              alt="main logo"
-            />
-          </a>
-          <div class="header-main__search">
-            <form class="header-main__search--form">
-              <input
-                class="header-main__search--input"
-                placeholder="검색어를 입력해주세요."
-              />
-              <button class="header-main__search--button">
-                <img src="./public/search.gif" alt="search button" />
-              </button>
+    <div class="body">
+      <!-- 공통 헤더 시작 -->
+      <header class="header-container">
+        <div class="header-banner">
+          <a
+            href="https://github.com/Team-fast4ward/market-log"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Follow our Github →</a
+          >
+        </div>
+        <div class="header">
+          <nav class="header__user-login">
+            <ul class="header__user-login--ul"></ul>
+          </nav>
+          <nav class="header-main">
+            <a class="header-main__home-link" href="/" data-navigo>
               <img
-                class="header-main__search--close-button nodisplay"
-                src="./public/x.png"
-                alt="close button"
+                class="header-main__logo"
+                src="./public/mainLogo.svg"
+                alt="main logo"
               />
-            </form>
-          </div>
-          <div class="header-main__links">
-            <!-- <a href="/admin" data-navigo
-              ><img
-                class="header-main__links-img"
-                src="./public/hearted.svg"
-                alt="관리자"
-            /></a> -->
-            <a
-              class="header-main__links--wishlist"
-              href="/mypage/wishlist"
-              data-navigo
-              ><img
-                class="header-main__links-img"
-                src="./public/emptyHeart.svg"
-                alt="찜하기"
-            /></a>
-            <a class="header-main__links--cart" href="/cart" data-navigo
-              ><img
-                class="header-main__links-img"
-                src="./public/cart.svg"
-                alt="카트"
-            /></a>
-            <a class="header-main__links--mypage" href="/mypage" data-navigo
-              ><img
-                class="header-main__links-img"
-                src="./public/member.svg"
-                alt="마이페이지"
-            /></a>
-          </div>
-        </nav>
-        <nav class="header-nav__category">
-          <ul class="header-nav__category--lists">
-            <a href="/category/keyboards" data-navigo>
-              <li class="header-nav__category--list">키보드</li>
             </a>
-            <a href="/category/keycaps" data-navigo>
-              <li class="header-nav__category--list">키캡</li>
-            </a>
-            <a href="/category/switches" data-navigo>
-              <li class="header-nav__category--list">스위치</li>
-            </a>
-            <a href="/category/accessories" data-navigo>
-              <li class="header-nav__category--list">액세서리</li>
-            </a>
-          </ul>
-        </nav>
+            <div class="header-main__search">
+              <form class="header-main__search--form">
+                <input
+                  class="header-main__search--input"
+                  placeholder="검색어를 입력해주세요."
+                />
+                <button class="header-main__search--button">
+                  <img src="./public/search.gif" alt="search button" />
+                </button>
+                <img
+                  class="header-main__search--close-button nodisplay"
+                  src="./public/x.png"
+                  alt="close button"
+                />
+              </form>
+            </div>
+            <div class="header-main__links">
+              <a
+                class="header-main__links--wishlist"
+                href="/mypage/wishlist"
+                data-navigo
+                ><img
+                  class="header-main__links-img"
+                  src="./public/emptyHeart.svg"
+                  alt="찜하기"
+              /></a>
+              <a class="header-main__links--cart" href="/cart" data-navigo
+                ><img
+                  class="header-main__links-img"
+                  src="./public/cart.svg"
+                  alt="카트"
+              /></a>
+              <a class="header-main__links--mypage" href="/mypage" data-navigo
+                ><img
+                  class="header-main__links-img"
+                  src="./public/member.svg"
+                  alt="마이페이지"
+              /></a>
+            </div>
+          </nav>
+          <nav class="header-nav__category">
+            <ul class="header-nav__category--lists">
+              <a href="/category/keyboards" data-navigo>
+                <li class="header-nav__category--list">키보드</li>
+              </a>
+              <a href="/category/keycaps" data-navigo>
+                <li class="header-nav__category--list">키캡</li>
+              </a>
+              <a href="/category/switches" data-navigo>
+                <li class="header-nav__category--list">스위치</li>
+              </a>
+              <a href="/category/accessories" data-navigo>
+                <li class="header-nav__category--list">액세서리</li>
+              </a>
+            </ul>
+          </nav>
+        </div>
+      </header>
+      <!-- 공통 헤더 끝 -->
+      <!-- 메인페이지 라우터 -->
+      <main class="app"></main>
+      <div class="loadingGif">
+        <img src="public/spinner.svg" alt="로딩.." id="img-loadingGIF" />
       </div>
-    </header>
-    <!-- 공통 헤더 끝 -->
-
-    <!-- 메인페이지 라우터 -->
-    <main class="app"></main>
-    <div class="loadingGif">
-      <img src="public/spinner.svg" alt="로딩.." id="img-loadingGIF" />
-    </div>
-    <!-- 메인페이지 끝 -->
-
-    <footer>
-      <div class="footer-container">
-        <div class="footer-menu footer-item">
-          <h6>Market.Log</h6>
-          <span>홈 </span>
-          <span>회사소개</span>
-          <span>이용약관</span>
-          <span>개인정보처리방침</span>
-        </div>
-        <div class="footer-second footer-item">
-          <h6>Support</h6>
-          <span>펌웨어</span>
-          <span>콘솔</span>
-          <span>자주하는 질문</span>
-          <span>배송 정책</span>
-          <span>결제</span>
-          <span>개인정보정책</span>
-          <span>제품 보증</span>
-          <span>반품 정책</span>
-          <span>이용약관</span>
-        </div>
-        <div class="footer-third footer-item">
-          <div>
-            <h6>Get in touch</h6>
-
-            <span>help@marketlog.com</span>
+      <!-- 메인페이지 끝 -->
+      <footer>
+        <div class="footer-container">
+          <div class="footer-menu footer-item">
+            <h6>Market.Log</h6>
+            <span>홈 </span>
+            <span>회사소개</span>
+            <span>이용약관</span>
+            <span>개인정보처리방침</span>
           </div>
-          <div>
-            <h6>Follow us</h6>
-            <div class="icons-wrap">
-              <a href="https://github.com/Team-fast4ward/market-log">
+          <div class="footer-second footer-item">
+            <h6>Support</h6>
+            <span>펌웨어</span>
+            <span>콘솔</span>
+            <span>자주하는 질문</span>
+            <span>배송 정책</span>
+            <span>결제</span>
+            <span>개인정보정책</span>
+            <span>제품 보증</span>
+            <span>반품 정책</span>
+            <span>이용약관</span>
+          </div>
+          <div class="footer-third footer-item">
+            <div>
+              <h6>Get in touch</h6>
+              <span>help@marketlog.com</span>
+            </div>
+            <div>
+              <h6>Follow us</h6>
+              <div class="icons-wrap">
+                <a href="https://github.com/Team-fast4ward/market-log">
+                  <img
+                    class="footer-icon"
+                    src="./public/footerImg/github-sign.png"
+                    alt="github icon"
+                  />
+                </a>
                 <img
                   class="footer-icon"
-                  src="./public/footerImg/github-sign.png"
-                  alt="github icon"
+                  src="./public/footerImg/instagram.png"
+                  alt="instagram icon"
                 />
-              </a>
-              <img
-                class="footer-icon"
-                src="./public/footerImg/instagram.png"
-                alt="instagram icon"
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/facebook.png"
-                alt="facebook icon"
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/youtube.png"
-                alt="youtube icon"
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/twitter-sign.png"
-                alt="twitter icon"
-              />
-              <img
-                class="footer-icon"
-                src="https://cdn.shopify.com/s/files/1/0059/0630/1017/t/13/assets/discord_icon.png"
-                alt="discord icon"
-              />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/facebook.png"
+                  alt="facebook icon"
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/youtube.png"
+                  alt="youtube icon"
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/twitter-sign.png"
+                  alt="twitter icon"
+                />
+                <img
+                  class="footer-icon"
+                  src="https://cdn.shopify.com/s/files/1/0059/0630/1017/t/13/assets/discord_icon.png"
+                  alt="discord icon"
+                />
+              </div>
+              <a
+                href="https://www.flaticon.com/free-icons/video"
+                title="video icons"
+                >icons created by Freepik - Flaticon</a
+              >
             </div>
-            <a
-              href="https://www.flaticon.com/free-icons/video"
-              title="video icons"
-              >icons created by Freepik - Flaticon</a
+          </div>
+          <div class="footer-last footer-item">
+            <div>
+              <h6>We accept</h6>
+              <div class="icons-wrap">
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card1.svg"
+                  alt="amex"
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card2.svg"
+                  alt="apple pay"
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card3.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card4.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card5.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card6.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card7.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card8.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card9.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card10.svg"
+                  alt=""
+                />
+                <img
+                  class="footer-icon"
+                  src="./public/footerImg/card11.svg"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-container">
+            <p>
+              © 2023 Market.Log® Wireless Mechanical Keyboard | Focus on the Fun
+              in Function
+            </p>
+          </div>
+        </div>
+      </footer>
+      <!-- 장바구니 modal -->
+      <div class="modal__addCart">
+        <div class="modal__addCart-container">
+          <img src="./public/cart.svg" alt="장바구니 추가 완료" />
+          <h4>장바구니에 추가되었습니다.</h4>
+          <div class="modal__addCart--btns">
+            <a class="modal__addCart--btn modal-keepShopping"
+              ><button>계속 쇼핑하기</button></a
+            >
+            <a href="/cart" data-navigo class="modal__addCart--btn goToCart"
+              ><button>장바구니가기</button></a
             >
           </div>
         </div>
-        <div class="footer-last footer-item">
-          <div>
-            <h6>We accept</h6>
-            <div class="icons-wrap">
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card1.svg"
-                alt="amex"
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card2.svg"
-                alt="apple pay"
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card3.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card4.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card5.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card6.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card7.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card8.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card9.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card10.svg"
-                alt=""
-              />
-              <img
-                class="footer-icon"
-                src="./public/footerImg/card11.svg"
-                alt=""
-              />
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="footer-bottom">
-        <div class="footer-container">
-          <p>
-            © 2023 Market.Log® Wireless Mechanical Keyboard | Focus on the Fun
-            in Function
-          </p>
-        </div>
+      <!-- alert modal -->
+      <div class="alertModal">
+        <div class="alertModal__container"></div>
       </div>
-    </footer>
-
-    <!-- 장바구니 modal -->
-    <div class="modal__addCart">
-      <div class="modal__addCart-container">
-        <img src="./public/cart.svg" alt="장바구니 추가 완료" />
-        <h4>장바구니에 추가되었습니다.</h4>
-        <div class="modal__addCart--btns">
-          <a class="modal__addCart--btn modal-keepShopping"
-            ><button>계속 쇼핑하기</button></a
-          >
-          <a href="/cart" data-navigo class="modal__addCart--btn goToCart"
-            ><button>장바구니가기</button></a
-          >
-        </div>
-      </div>
+      <div class="modal-container"></div>
     </div>
-
-    <!-- alert modal -->
-    <div class="alertModal">
-      <div class="alertModal__container"></div>
-    </div>
-    <div class="modal-container"></div>
   </body>
 </html>

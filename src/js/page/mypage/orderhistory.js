@@ -80,10 +80,10 @@ export const handleOrderHistoryInitTemplate = async () => {
   const renderOrderHistoryPageInitTemplate = `
   <div class="mypage__orderhistory">
     <h2>주문 내역</h2>
-    <div class="calendar-box">
+    <form class="calendar-box">
       <input class="calendar-date" type="date"></input>
       <button><img class="orderhistory_reload-btn" src="${reload}" alt="reload icon"></button>
-    </div>
+    </form>
     <div class="products-container">
       <div class="nocontent-box nodisplay">
         <p>
@@ -178,6 +178,8 @@ const renderOrderedListPage = async () => {
   renderSkeletonUIinOrderHistoryPage();
   const transactionArr = await getAllTransactions();
   console.log('transactionArr', transactionArr);
+  // [주문내역 페이지] 캘린더
+
   // 주문한 제품 없을 경우
   if (transactionArr.length === 0) {
     emptyOrderHistory();
@@ -186,8 +188,6 @@ const renderOrderedListPage = async () => {
     // 주문한 제품 있을 경우
     // renderOrderedProductList(transactionArr);
     orderHistoryUtilInit();
-
-    // [주문내역 페이지] 캘린더
 
     // [주문내역 페이지] 새로고침
     await $('.orderhistory_reload-btn').addEventListener('click', () => {
