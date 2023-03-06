@@ -1,4 +1,4 @@
-import { chevronrightSVG, paginationRight } from '../importIMGFiles';
+import { chevronrightSVG } from '../importIMGFiles';
 import { router } from '../main';
 import { $$ } from '../utils/dom';
 import { renderPage } from '../utils/render';
@@ -15,12 +15,12 @@ export const htmlMypage_Nav = /* html */ `
         <ul>
           <li>
             <a href="/mypage/order" data-navigo id="mpOrderHistory">주문 내역
-              <img src="${paginationRight}" alt="chevronright">
+              <img src="${chevronrightSVG}" alt="chevronright">
             </a>
           </li>
           <li>
             <a href="/mypage/account" data-navigo id="mpAccount">계좌 관리
-              <img src="${paginationRight}" alt="chevronright">
+              <img src="${chevronrightSVG}" alt="chevronright">
             </a>
           </li>
           <li>

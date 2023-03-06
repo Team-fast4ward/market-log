@@ -358,10 +358,10 @@ const orderHistoryUtilDisplayButtons = (
     </button>`;
   });
   utilBtns.push(
-    `<button class="order-history__pagination--btn-next"><img src="${paginationRight}"/></button>`,
+    `<button class="order-history__pagination--btn-next">></button>`,
   );
   utilBtns.unshift(
-    `<button class="order-history__pagination--btn-prev"><img src="${paginationLeft}"/></button>`,
+    `<button class="order-history__pagination--btn-prev"><</button>`,
   );
   if (container) {
     container.innerHTML = utilBtns.join('');

@@ -5,7 +5,6 @@ import { recentViewStore } from '../../store/recentViewStore';
 import { GetAllProductsInterface } from '../../interface/index';
 import { RecentView } from '../../interface/store';
 import { Category } from '../../interface/enum';
-import { paginationLeft, paginationRight } from '../../importIMGFiles';
 
 /*-----------------------------------*\
   #카테고리 페이지 # category js
@@ -288,10 +287,10 @@ const categoryUtilDisplayButtons = (
   });
 
   categoryUtilBtns.push(
-    `<button class="categoryPage__pagination--btn-next">${paginationRight}</button>`,
+    `<button class="categoryPage__pagination--btn-next">></button>`,
   );
   categoryUtilBtns.unshift(
-    `<button class="categoryPage__pagination--btn-prev">${paginationLeft}</button>`,
+    `<button class="categoryPage__pagination--btn-prev"><</button>`,
   );
   container.innerHTML = categoryUtilBtns.join('');
 };
