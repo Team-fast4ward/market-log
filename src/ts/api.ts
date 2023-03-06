@@ -17,7 +17,7 @@ import {
   PersonalInfoLogin,
   TransactionDetailInterface,
   RegisterRes,
-} from './interface/index';
+} from './types/index';
 // api 파일입니다.
 
 // dotenv 사용 예시

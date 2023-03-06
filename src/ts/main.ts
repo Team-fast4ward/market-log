@@ -2,13 +2,13 @@ import Navigo from 'navigo';
 import { $ } from './utils/dom';
 import { handleMyPage } from './page/mypage';
 import { handleAccountPage } from './page/mypage/account';
-import { handleLoginPage } from './page/login';
-import { handleSignupPage } from './page/signup';
+import { handleLoginPage } from './page/loginPage';
+import { handleSignupPage } from './page/signupPage';
 import { handleCartPage } from './page/cartPage/cartPage';
-import { handleMainPage } from './page/mainPage/mainPage';
+import { handleMainPage, renderCategoryNav } from './page/mainPage/mainPage';
 import { handleCategoryPage } from './page/categoryPage/categoryPage';
 import { handleSearchPage } from './page/searchPage/searchPage';
-import { handleDetailProductPage } from './page/productDetail/productDetail';
+import { handleDetailProductPage } from './page/productDetailPage/productDetailPage';
 import { handleWishListPage } from './page/wishListPage/wishListPage';
 import { handlePaymentPage } from './page/paymentPage/paymentPage';
 import { handleOrderHistoryPage } from './page/mypage/orderhistory';
@@ -32,8 +32,9 @@ import {
   sideBar,
   orderDetailPage,
 } from './page/admin/renderTemplate';
-import { Params } from './interface/params';
+import { Params } from './types/params';
 import { handleErrorPage } from './page/errorPage/errorPage';
+import { getAllProducts } from './api';
 
 export const router = new Navigo('/');
 export const divLoadingEl = $('.loadingGif');
@@ -58,7 +59,8 @@ router
     '/': () => {
       handleMainPage();
     },
-    '/products/search': () => {
+    '/products/search': async () => {
+      renderCategoryNav(await getAllProducts());
       handleSearchPage();
     },
     '/product/:id': (params: Params) => {

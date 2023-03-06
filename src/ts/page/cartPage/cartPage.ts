@@ -4,16 +4,14 @@
 
 import { router } from '../../main';
 import { $ } from '../../utils/dom';
-import { updateInfo } from '../productDetail/productDetail';
+import { updateInfo } from '../productDetailPage/productDetailPage';
 import { shoppingCartStore } from '../../store/shoppingCartStore';
 import { cartSVG } from '../../importIMGFiles';
 import { renderPage } from '../../utils/render';
 import { formatPrice } from '../../utils/format';
-import { countQtyInCart } from '../mainPage/mainPage';
-import {
-  ShoppingCartStore,
-  ShoppingCartStoreValue,
-} from '../../interface/store';
+import { updateCartItemQty } from '../mainPage/mainPage';
+import { ShoppingCartStore, ShoppingCartStoreValue } from '../../types/store';
+import { CartOperation } from '../../types/enum';
 
 /** 장바구니 총 가격 렌더링 */
 export const renderCartTotalPrice = (): number => {
@@ -30,18 +28,6 @@ export const renderCartTotalPrice = (): number => {
 
   return cartTotalPriceReduce;
 };
-
-/** 장바구니 비었을 때 '결제하기 버튼' 예외처리 */
-// const handleCartPaymentBtn = () => {
-//   // const shoppingCartArr = shoppingCartStore.getLocalStorage();
-//   const enableBtn = `<button class="cart__price--paymentBtn cartPaymentBtn">결제하기</button>`;
-//   const disabledBtn = `<button class="cart__price--paymentBtn-disabled cartPaymentBtn" disabled='true' >결제하기</button>`;
-//   if (shoppingCartStore.getLocalStorage().length > 0) {
-//     return enableBtn;
-//   } else if (shoppingCartStore.getLocalStorage().length === 0) {
-//     return disabledBtn;
-//   }
-// };
 
 // 장바구니 페이지 초기 렌더링
 export const renderInitCartPage = `
@@ -79,8 +65,13 @@ export const renderInitCartPage = `
         </div>
       </div>
       <a href="/payment" data-navigo
-        ><div class="handleCartPaymentBtn"><button class="cart__price--paymentBtn-disabled cartPaymentBtn" disabled="true">결제하기</button></div></a
-      >
+        ><div class="handleCartPaymentBtn">
+          <button class="cart__price--paymentBtn-disabled cartPaymentBtn" disabled="true">
+            결제하기
+          </button>
+        </div>
+      </a
+    >
     </aside>
   </div>
 </section>
@@ -212,56 +203,73 @@ $('.app')?.addEventListener('click', (e: MouseEvent) => {
 //   pushInCart(e);
 // });
 
-/** 장바구니 페이지에서 수량 핸들링 */
+/** 장바구니 아이템 수량 조절 함수 */
+const handleCartItemQty = (id: string, operation: CartOperation) => {
+  let shoppingCartArr = shoppingCartStore.getLocalStorage();
+  const existingItem = shoppingCartArr.find(
+    (item: ShoppingCartStore): boolean => item.id === id,
+  );
+
+  switch (operation) {
+    case CartOperation.INCREMENT:
+      if (existingItem) {
+        existingItem.price += existingItem.pricePerOne;
+        existingItem.qty += 1;
+        existingItem.count += 1;
+
+        // + localStorage에 저장
+        shoppingCartStore.setLocalStorage(shoppingCartArr);
+      }
+      break;
+
+    case CartOperation.DECREMENT:
+      if (existingItem) {
+        if (existingItem) {
+          if (existingItem.price > existingItem.pricePerOne) {
+            existingItem.price -= existingItem.pricePerOne;
+          }
+          if (existingItem.qty > 1) {
+            existingItem.qty -= 1;
+          }
+          if (existingItem.count > 1) {
+            existingItem.count -= 1;
+          }
+
+          // - localStorage에 저장
+          shoppingCartStore.setLocalStorage(shoppingCartArr);
+        }
+      }
+      break;
+
+    case CartOperation.DELETE:
+      shoppingCartArr = shoppingCartStore
+        .getLocalStorage()
+        .filter((item: ShoppingCartStore): boolean => item.id !== id);
+      shoppingCartStore.setLocalStorage(shoppingCartArr);
+      break;
+
+    default:
+      throw new Error(`존재하지 않는 ${operation}`);
+  }
+
+  updateCartItemQty();
+  renderCartPage();
+};
+
+/** 장바구니 페이지에서 수량 핸들링 이벤트 */
 $('.app').addEventListener('click', (e: MouseEvent) => {
   const id = (e.target as HTMLLIElement).closest('li')?.dataset.productId;
-  // 구매 수량 +
-  let shoppingCartArr = shoppingCartStore.getLocalStorage();
+
   if ((e.target as HTMLButtonElement).classList.contains('cart-addQtyBtn')) {
-    storeLocalStorage(id);
-    // shoppingCartStore.setLocalStorage(shoppingCartArr);
-    // 카트 페이지 렌더
-    renderCartPage();
-    return;
-  }
-
-  // 구매 수량 -
-  if ((e.target as HTMLButtonElement).classList.contains('cart-minusQtyBtn')) {
-    // let shoppingCartArr = shoppingCartStore.getLocalStorage();
-    const existingItem = shoppingCartArr.find(
-      (item: ShoppingCartStore): boolean => item.id === id,
-    );
-
-    if (existingItem) {
-      if (existingItem.price > existingItem.pricePerOne) {
-        existingItem.price -= existingItem.pricePerOne;
-      }
-      if (existingItem.qty > 1) {
-        existingItem.qty -= 1;
-      }
-      if (existingItem.count > 1) {
-        existingItem.count -= 1;
-      }
-
-      // 카트 페이지 렌더
-      shoppingCartStore.setLocalStorage(shoppingCartArr);
-      renderCartPage();
-    }
-  }
-
-  // 장바구니에서 삭제
-  if (
+    handleCartItemQty(id, CartOperation.INCREMENT);
+  } else if (
+    (e.target as HTMLButtonElement).classList.contains('cart-minusQtyBtn')
+  ) {
+    handleCartItemQty(id, CartOperation.DECREMENT);
+  } else if (
     (e.target as HTMLButtonElement).classList.contains('cartProductDeleteBtn')
   ) {
-    shoppingCartArr = shoppingCartStore
-      .getLocalStorage()
-      .filter((item: ShoppingCartStore): boolean => item.id !== id);
-    // storeLocalStorage(id);
-    shoppingCartStore.setLocalStorage(shoppingCartArr);
-
-    countQtyInCart();
-    renderCartPage();
-    return;
+    handleCartItemQty(id, CartOperation.DELETE);
   }
 });
 

@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="./src/scss/index.scss" />
     <!-- kakao 우편번호 찾기 api -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=26e53c394ca0000e128fe5483eb64985&libraries=services"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7c9e5a646386af3e36b1fffb93f2ffcc&libraries=services"></script>
     <!-- javascript -->
     <script type="module" src="./src/ts/main.ts" defer></script>
   </head>
@@ -101,35 +101,16 @@
             </div>
           </nav>
           <nav class="header-nav__category">
-            <ul class="header-nav__category--lists">
-              <a href="/category/keyboards" data-navigo>
-                <li class="header-nav__category--list">키보드</li>
-              </a>
-              <a href="/category/keycaps" data-navigo>
-                <li class="header-nav__category--list">키캡</li>
-              </a>
-              <a href="/category/switches" data-navigo>
-                <li class="header-nav__category--list">스위치</li>
-              </a>
-              <a href="/category/accessories" data-navigo>
-                <li class="header-nav__category--list">액세서리</li>
-              </a>
-            </ul>
+            <ul class="header-nav__category--lists"></ul>
           </nav>
         </div>
       </header>
       <!-- 공통 헤더 끝 -->
+
       <!-- 메인페이지 라우터 -->
       <main class="app"></main>
-      <div class="loadingGif">
-        <img
-          style="width: 100px; height: 100px"
-          src="public/spinner.svg"
-          alt="로딩.."
-          id="img-loadingGIF"
-        />
-      </div>
       <!-- 메인페이지 끝 -->
+
       <footer>
         <div class="footer-container">
           <div class="footer-menu footer-item">
@@ -271,6 +252,7 @@
           </div>
         </div>
       </footer>
+
       <!-- 장바구니 modal -->
       <div class="modal__addCart">
         <div class="modal__addCart-container">

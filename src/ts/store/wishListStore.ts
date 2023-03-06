@@ -1,4 +1,4 @@
-import { WishListStore } from '../interface/store';
+import { WishListStore } from '../types/store';
 
 /** 찜하기 목록 localStorage */
 export const wishListStore = {

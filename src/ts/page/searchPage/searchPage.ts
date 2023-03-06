@@ -5,10 +5,13 @@ import {
   renderInitCategoryPage,
   renderRecentViewed,
 } from '../categoryPage/categoryPage';
-import { renderSkeletonUIinCategoryPage } from '../categoryPage/categoryPage';
 import { router } from '../../main';
 import { recentViewStore } from '../../store/recentViewStore';
-import { GetAllProductsInterface } from '../../interface/index';
+import { GetAllProductsInterface } from '../../types/index';
+import {
+  renderSkeletonUI,
+  skeletonUITemplateCategoryPage,
+} from '../../utils/skeletonUI';
 
 /*-----------------------------------*\
   검색 페이지  #search
@@ -68,7 +71,11 @@ const findProduct = async () => {
 /** 검색한 제품의 유/무 예외처리 핸들링 함수 */
 const handleSearchPageResult = async (): Promise<void> => {
   renderPage(renderInitCategoryPage);
-  renderSkeletonUIinCategoryPage();
+  renderSkeletonUI(
+    skeletonUITemplateCategoryPage,
+    12,
+    $<HTMLUListElement>('.categoryPage__product--lists'),
+  );
   renderRecentViewed(recentViewStore.getLocalStorage().slice(0, 5));
   const findProductArr = await findProduct();
 

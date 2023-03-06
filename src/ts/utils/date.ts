@@ -1,17 +1,32 @@
 interface getDateInterface {
-  date: Date;
+  year: string;
   month: string;
-  today: string;
+  date: string;
 }
 
-export const getDate = (): getDateInterface => {
+export const getDate = (prevDateNum: number = 0): getDateInterface => {
   const today = new Date();
 
   const dateObj: getDateInterface = {
-    date: today,
+    year: String(today.getFullYear()),
     month: String(today.getMonth() + 1).padStart(2, '0'),
-    today: String(today.getDate()).padStart(2, '0'),
+    date: String(today.getDate()).padStart(2, '0'),
   };
 
-  return dateObj;
+  if (!prevDateNum) return dateObj;
+  else {
+    const prevDate = new Date(
+      Number(dateObj.year),
+      Number(dateObj.month) - 1,
+      Number(dateObj.date) - prevDateNum,
+    );
+
+    const prevDateObj: getDateInterface = {
+      year: String(prevDate.getFullYear()),
+      month: String(prevDate.getMonth() + 1).padStart(2, '0'),
+      date: String(prevDate.getDate()).padStart(2, '0'),
+    };
+
+    return prevDateObj;
+  }
 };

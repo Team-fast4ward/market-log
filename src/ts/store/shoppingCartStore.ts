@@ -1,4 +1,4 @@
-import { ShoppingCartStore } from '../interface/store';
+import { ShoppingCartStore } from '../types/store';
 
 /** 장바구니 localStorage */
 export const shoppingCartStore = {

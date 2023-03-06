@@ -5,61 +5,23 @@ import { $ } from '../../utils/dom';
 import { renderPage } from '../../utils/render';
 import { getDetailOrderProduct } from '../../api';
 import { formatDate } from '../../utils/format';
-import { getLoginStatus, showAlertPlzLogin } from '../login';
+import { getLoginStatus, showAlertPlzLogin } from '../loginPage';
 import { htmlMypage_Nav } from '../mypage';
 import { router } from '../../main';
-
-/** 마이 페이지 mypage__navigo__container 초기 템플릿 */
-// const renderInitMypageTemplate = `
-//       <div class="mypage__app">
-//         <div class="mypage__container">
-//           <div class="mypage__navbar">
-//             <h1>마이페이지</h1>
-//             <nav>
-//               <ul>
-//                 <li>
-//                   <a href="/mypage/order" data-navigo
-//                     >주문내역
-//                     <img src="./public/chevronright.svg" alt="chevronright" />
-//                   </a>
-//                 </li>
-//                 <li>
-//                   <a href="/mypage/account" data-navigo
-//                     >계좌 관리
-//                     <img src="./public/chevronright.svg" alt="chevronright" />
-//                   </a>
-//                 </li>
-//                 <li>
-//                   <a href="/mypage/wishlist" data-navigo
-//                     >찜한 상품
-//                     <img src="./public/chevronright.svg" alt="chevronright" />
-//                   </a>
-//                 </li>
-//                 <li>
-//                   <a href="/mypage/editPersonalInfo" data-navigo
-//                     >개인 정보 수정
-//                     <img src="./public/chevronright.svg" alt="chevronright" />
-//                   </a>
-//                 </li>
-//               </ul>
-//             </nav>
-//           </div>
-//           <div class="mypage__navigo__container"></div>
-//         </div>
-//       </div>
-// `;
+import { OrderStatus } from '../../types/enum';
+import {
+  renderSkeletonUI,
+  skeletonUITemplateDetailOrderHistoryPage,
+} from '../../utils/skeletonUI';
 
 /** 주문 상세정보 구매확정/취소/완료 체크 함수 */
-const checkWhetherDetailOrderTransactionIsDone = (
-  done: boolean,
-  isCanceled: boolean,
-) => {
+const checkTransactionStatus = (done: boolean, isCanceled: boolean): string => {
   if (done) {
-    return '구매 확정';
+    return OrderStatus.DONE;
   } else if (isCanceled) {
-    return '구매 취소';
+    return OrderStatus.CANCELED;
   } else if (!done && !isCanceled) {
-    return '구매 완료';
+    return OrderStatus.COMPLETED;
   }
 };
 
@@ -109,7 +71,7 @@ const renderDetailOrderProduct = async (id: string): Promise<void> => {
         </div>
       </div>
       <div class="detailorderhistory__product--order-status">
-        ${checkWhetherDetailOrderTransactionIsDone(done, isCanceled)}
+        ${checkTransactionStatus(done, isCanceled)}
       </div>
     </div>
     <h2 class="detailorderhistory__product--payment-info-title">
@@ -140,26 +102,14 @@ const renderDetailOrderProduct = async (id: string): Promise<void> => {
   $('.mypage__navigo__container').innerHTML = detailOrderTemplate;
 };
 
-/** 상세 주문 내역 skeleton ui 초기 렌더링 */
-const renderSkeletonUIinDetailOrderHistoryPage = (): void => {
-  const skeletonUITemplate = `
-  <li class="orderHistoryPage__skeleton"></li>
-`;
-
-  const skeletonUI12: string = Array(2)
-    .fill(skeletonUITemplate)
-    .map((v: string) => {
-      return v;
-    })
-    .join('');
-
-  $('.mypage__navigo__container').innerHTML = skeletonUI12;
-};
-
 /** 상세 주문내역 핸들링 함수 */
 const renderDetailOrderPage = async (params: string): Promise<void> => {
   renderPage(htmlMypage_Nav);
-  renderSkeletonUIinDetailOrderHistoryPage();
+  renderSkeletonUI(
+    skeletonUITemplateDetailOrderHistoryPage,
+    2,
+    $('.mypage__navigo__container'),
+  );
   await renderDetailOrderProduct(params);
 };
 

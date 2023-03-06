@@ -4,6 +4,10 @@ import { air60, air75, halo65, halo75, halo96 } from '../../importIMGFiles';
 import { shoppingCartStore } from '../../store/shoppingCartStore';
 import { wishListStore } from '../../store/wishListStore';
 import { router } from '../../main';
+import { getAllProducts } from '../../api';
+import { GetAllProductsInterface } from '../../types';
+import { getCategoryName } from '../productDetailPage/productDetailPage';
+import { Category } from '../../types/enum';
 
 /*-----------------------------------*\
   #메인 페이지
@@ -147,21 +151,51 @@ $<HTMLSpanElement>('.header__wishlist--qty').innerHTML = wishListStore
   .length.toString();
 
 /** 장바구니 상품 수량 카운팅 함수*/
-export const countQtyInCart = () => {
+export const updateCartItemQty = () => {
   $<HTMLSpanElement>('.header__cart--qty').innerHTML = shoppingCartStore
     .getLocalStorage()
     .length.toString();
 };
 
-export const countQtyInWishlist = () => {
+export const updateWishListItemQty = () => {
   $<HTMLSpanElement>('.header__wishlist--qty').innerHTML = wishListStore
     .getLocalStorage()
     .length.toString();
 };
 
+/** 카테고리 navbar 렌더 함수 */
+export const renderCategoryNav = async (items: GetAllProductsInterface[]) => {
+  const categoryList = Array.from(new Set(items.map((item) => item.tags[0])));
+  categoryList.sort((a, b) => {
+    const categoryOrder = [
+      Category.keyboards,
+      Category.keycaps,
+      Category.switches,
+      Category.switches,
+    ];
+    return (
+      categoryOrder.indexOf(a as Category) -
+      categoryOrder.indexOf(b as Category)
+    );
+  });
+
+  const renderCategoryNavTemplate = categoryList
+    .map(
+      (category) => `
+      <a href="/category/${getCategoryName(category)}" data-navigo>
+        <li class="header-nav__category--list">${category}</li>
+      </a>
+    `,
+    )
+    .join('');
+
+  $('.header-nav__category--lists').innerHTML = renderCategoryNavTemplate;
+};
+
 /** router on '/' 핸들링 함수 */
-export const handleMainPage = () => {
+export const handleMainPage = async () => {
   $('.modal__addCart').style.display = 'none';
-  countQtyInCart();
+  updateCartItemQty();
+  renderCategoryNav(await getAllProducts());
   renderPage(renderMainPageTemplate);
 };

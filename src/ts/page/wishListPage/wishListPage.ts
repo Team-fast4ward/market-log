@@ -5,14 +5,14 @@
 import { $ } from '../../utils/dom';
 import { renderPage } from '../../utils/render';
 import { shoppingCart, hearted } from '../../importIMGFiles';
-import { storeCart } from '../productDetail/productDetail';
+import { storeCart } from '../productDetailPage/productDetailPage';
 import { wishListStore } from '../../store/wishListStore';
 import { shoppingCartStore } from '../../store/shoppingCartStore';
 import { htmlMypage_Nav, resetNavbarActive } from '../mypage';
 import { router } from '../../main';
-import { countQtyInCart, countQtyInWishlist } from '../mainPage/mainPage';
-import { getLoginStatus, showAlertPlzLogin } from '../login';
-import { WishListStore, WishListStoreValue } from '../../interface/store';
+import { updateCartItemQty, updateWishListItemQty } from '../mainPage/mainPage';
+import { getLoginStatus, showAlertPlzLogin } from '../loginPage';
+import { WishListStore, WishListStoreValue } from '../../types/store';
 
 /** 찜한상품 제목, ul 태그 템플릿 삽입 */
 const handleWishListInitTemplate = () => {
@@ -120,7 +120,7 @@ $('.app').addEventListener('click', (e: MouseEvent) => {
     wishListArr = wishListArr.filter((item) => item.id !== id);
 
     wishListStore.setLocalStorage(wishListArr);
-    countQtyInWishlist();
+    updateWishListItemQty();
     // wishListUtilInit();
     renderWishListPage();
   }
@@ -146,7 +146,7 @@ $('.app').addEventListener('click', (e: MouseEvent) => {
       wishListInfo.pricePerOne,
     );
     shoppingCartStore.setLocalStorage(shoppingCartStore.getLocalStorage());
-    countQtyInCart();
+    updateCartItemQty();
   }
 });
 

@@ -22,9 +22,13 @@ import {
 import { formatDate } from '../../utils/format';
 import { htmlMypage_Nav, resetNavbarActive } from '../mypage';
 import { router } from '../../main';
-import { getLoginStatus, showAlertPlzLogin } from '../login';
-import { GetAllTransactionsInterface } from '../../interface/index';
+import { getLoginStatus, showAlertPlzLogin } from '../loginPage';
+import { GetAllTransactionsInterface } from '../../types/index';
 import { toggleLoadingSpinner } from '../../utils/loading';
+import {
+  renderSkeletonUI,
+  skeletonUITemplateDetailOrderHistoryPage,
+} from '../../utils/skeletonUI';
 
 /** 거래 완료/취소 확인 함수 */
 const checkWhetherTransactionIsDone = (
@@ -154,20 +158,6 @@ const renderOrderedProductList = (
   }
 };
 
-/** 주문 내역 skeleton ui 초기 렌더링 */
-const renderSkeletonUIinOrderHistoryPage = (): void => {
-  const skeletonUITemplate = `
-  <li class="orderHistoryPage__skeleton"></li>
-`;
-  const skeletonUI12 = Array(12)
-    .fill(skeletonUITemplate)
-    .map((v) => {
-      return v;
-    })
-    .join('');
-  $('.orderHistory__lists').innerHTML = skeletonUI12;
-};
-
 /** 구매내역이 없을 경우 render 핸들링 함수, 빈 구매내역 template */
 const emptyOrderHistory = (): void => {
   const emptyOrderHistoryTemplate = `
@@ -186,7 +176,11 @@ const renderOrderedListPage = async (): Promise<void> => {
   handleOrderHistoryInitTemplate();
   resetNavbarActive();
   setNavbarActive();
-  renderSkeletonUIinOrderHistoryPage();
+  renderSkeletonUI(
+    skeletonUITemplateDetailOrderHistoryPage,
+    10,
+    $('.orderHistory__lists'),
+  );
   const transactionArray = await getAllTransactions();
   // 주문한 제품 없을 경우
   if (transactionArray.length === 0) {
@@ -201,10 +195,6 @@ const renderOrderedListPage = async (): Promise<void> => {
     });
   }
 };
-// const setNavbacActive = () => {
-//   const active = document.querySelector('#mpOrderHistory');
-//   active.parentElement.classList.add('active');
-// };
 
 // [주문 내역 페이지] 구매확정/취소 버튼 클릭 이벤트 */
 $('.app').addEventListener('click', async (e: MouseEvent) => {
@@ -274,16 +264,6 @@ $('.app').addEventListener('click', async (e: MouseEvent) => {
       $('.modal-container').innerHTML = '';
       return;
     });
-    // cancelTransactionAPI(detailId);
-    // e.target
-    //   .closest('li')
-    //   .querySelector('.orderHistory__list--confirmed-order').innerHTML =
-    //   '구매가 취소되었습니다.';
-    // e.target
-    //   .closest('li')
-    //   .querySelector('.orderHistory__list--buttons').style.display = 'none';
-    // return;
-  }
 });
 
 /** /mypage/order 핸들링 함수 */

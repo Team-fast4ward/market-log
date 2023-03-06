@@ -1,4 +1,4 @@
-import { RecentView } from '../interface/store';
+import { RecentView } from '../types/store';
 
 export const recentViewStore = {
   setLocalStorage(product: RecentView[]): void {

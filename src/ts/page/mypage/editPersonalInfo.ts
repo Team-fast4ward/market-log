@@ -1,10 +1,10 @@
 import { $ } from '../../utils/dom';
 import { router } from '../../main';
 import { renderPage } from '../../utils/render';
-import { getLoginStatus, showAlertPlzLogin } from '../login';
+import { getLoginStatus, showAlertPlzLogin } from '../loginPage';
 import { htmlMypage_Nav, resetNavbarActive } from '../mypage';
 import { authorization, personalInfoLogin, submitChangeInfo } from '../../api';
-import { Authorization } from '../../interface/index';
+import { Authorization } from '../../types/index';
 /** 개인정보 수정 페이지 html 템플릿 */
 const handleEditPersonalInfoPrecheckTemplate = () => {
   const htmlMypage_editPersonalInfo_precheck = /* html */ `

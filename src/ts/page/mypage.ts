@@ -2,7 +2,7 @@ import { chevronrightSVG } from '../importIMGFiles';
 import { router } from '../main';
 import { $$ } from '../utils/dom';
 import { renderPage } from '../utils/render';
-import { getLoginStatus, showAlertPlzLogin } from './login';
+import { getLoginStatus, showAlertPlzLogin } from './loginPage';
 let navliList;
 
 /** HTML : mypage nav 목록 */

@@ -3,9 +3,9 @@ import {
   GetAllProductsInterface,
   TransactionDetailInterface,
   ConfirmOrder,
-} from '../../interface/index';
-import { CurrentStatusInterface } from '../../interface/index';
-import { Category } from '../../interface/enum';
+} from '../../types/index';
+import { CurrentStatusInterface } from '../../types/index';
+import { Category } from '../../types/enum';
 
 /**[상품관리수정 페이지] 페이지 렌더 */
 export const renderEditProduct = (

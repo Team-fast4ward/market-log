@@ -4,7 +4,7 @@ import { router } from '../main';
 import { renderPage } from '../utils/render';
 import { outlink } from '../importIMGFiles';
 import { login, logout, authorization } from '../api';
-import { PersonalInfoLogin } from '../interface/index';
+import { PersonalInfoLogin } from '../types/index';
 
 const ulLoginHeaderEl = $('.header__user-login--ul');
 

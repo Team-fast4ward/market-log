@@ -1,7 +1,7 @@
 import { $ } from '../../utils/dom';
 import { renderPage } from '../../utils/render';
 import { htmlMypage_Nav } from '../mypage';
-import { getLoginStatus, showAlertPlzLogin } from '../login';
+import { getLoginStatus, showAlertPlzLogin } from '../loginPage';
 import { router } from '../../main';
 import {
   getBankList,
@@ -9,7 +9,7 @@ import {
   createUserAccount,
   deleteAccount,
 } from '../../api';
-import { GetBankList, GetUserAccounts } from '../../interface/index';
+import { GetBankList, GetUserAccounts } from '../../types/index';
 import { toggleLoadingSpinner } from '../../utils/loading';
 
 // HTML : mypage 계좌관리 탭

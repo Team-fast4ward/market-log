@@ -5,71 +5,46 @@
 import { router } from '../../main';
 import { $ } from '../../utils/dom';
 import { addHeart, emptyHeart } from '../../importIMGFiles';
-import { getDetailProduct } from '../../api';
+import { getAllProducts, getDetailProduct } from '../../api';
 import { wishListStore } from '../../store/wishListStore';
 import { shoppingCartStore } from '../../store/shoppingCartStore';
 import { recentViewStore } from '../../store/recentViewStore';
-import { renderInitHeaderLogin } from '../login';
+import { renderInitHeaderLogin } from '../loginPage';
 import { formatPrice } from '../../utils/format';
-import { countQtyInCart, countQtyInWishlist } from '../mainPage/mainPage';
-import { WishListStore } from '../../interface/store';
+import {
+  renderCategoryNav,
+  updateCartItemQty,
+  updateWishListItemQty,
+} from '../mainPage/mainPage';
+import { WishListStore } from '../../types/store';
+import {
+  renderSkeletonUI,
+  skeletonUITemplateProductDetail,
+} from '../../utils/skeletonUI';
+import { Category } from '../../types/enum';
 
 /** 찜하기 상품 유/무에 따라 다른 초기화면 렌더링 */
 export const checkWhetherAddWishList = (id: string): string => {
-  let wishListArr = wishListStore.getLocalStorage();
+  const wishListArr = wishListStore.getLocalStorage();
   const existingItem = wishListArr.find((item) => item.id === id);
   return existingItem ? addHeart : emptyHeart;
 };
 
 /** 찜하기 목록에 저장 */
-export const storeWishList = (
-  id: string,
-  count: number,
-  thumbnail: string,
-  title: string,
-  pricePerOne: number,
-): void => {
-  let wishListArr = wishListStore.getLocalStorage();
-  const existingItem = wishListStore
-    .getLocalStorage()
-    .find((item: WishListStore): boolean => item.id === id);
+export const storeWishList = (params: WishListStore): void => {
+  const wishListMap = new Map<string, WishListStore>(
+    wishListStore.getLocalStorage().map((item) => [item.id, item]),
+  );
+  const existingItem = wishListMap.get(params.id);
   if (!existingItem) {
-    wishListArr.unshift({ id, count, thumbnail, title, pricePerOne });
-    wishListStore.setLocalStorage(wishListArr);
-  } else if (existingItem) {
-    wishListArr = wishListArr.filter(
-      (item: WishListStore): boolean => item.id !== id,
-    );
-
-    wishListStore.setLocalStorage(wishListArr);
+    wishListMap.set(params.id, params);
+  } else {
+    wishListMap.delete(params.id);
   }
+  const wishListArr = Array.from(wishListMap.values());
+  wishListStore.setLocalStorage(wishListArr);
 };
 
-///////////////////////////
-
-/** [제품 상세페이지] skeleton ui 초기 렌더링 */
-export const renderSkeletonUIinDetailProductPage = (): void => {
-  const skeletonUITemplate: string = `
-    <div class="productDetail__skeleton--container">
-      <div class="productDetail__skeleton--img"></div>
-      <div class="productDetail__skeleton--aside">
-        <div class="productDetail__skeleton--aside-desc"></div>
-        <div class="productDetail__skeleton--aside-desc"></div>
-        <div class="productDetail__skeleton--aside-desc"></div>
-        <div class="productDetail__skeleton--aside-desc"></div>
-      </div>
-    </div>
-`;
-
-  const skeletonUI12: string = Array(1)
-    .fill(skeletonUITemplate)
-    .map((v: string) => {
-      return v;
-    })
-    .join('');
-
-  $('.app').innerHTML = skeletonUI12;
-};
 /** 장바구니에 저장 */
 export const storeCart = (
   id: string,
@@ -94,6 +69,19 @@ export const storeCart = (
     existingItem.price += pricePerOne * count;
     shoppingCartStore.setLocalStorage(shoppingCartArr);
     return;
+  }
+};
+
+export const getCategoryName = (category: string) => {
+  switch (category) {
+    case Category.keyboards:
+      return 'keyboards';
+    case Category.keycaps:
+      return 'keycaps';
+    case Category.switches:
+      return 'switches';
+    case Category.accessories:
+      return 'accessories';
   }
 };
 
@@ -123,7 +111,9 @@ export const renderDetailProduct = async (productId: string) => {
 
   const productTags = tags
     .map((tag: string) => {
-      return `<li class="aside__productDetail--info-tagLists-tag">${tag}</li>`;
+      return `<a href="/category/${getCategoryName(tag)}" data-navigo>
+                <li class="aside__productDetail--info-tagLists-tag">${tag}</li>
+              </a>`;
     })
     .join('');
 
@@ -202,7 +192,7 @@ export const pushInCart = (e: MouseEvent): void => {
     const pricePerOne = productDetailPricePerOne;
 
     storeCart(id, price, count, thumbnail, title, pricePerOne);
-    countQtyInCart();
+    updateCartItemQty();
   }
 };
 
@@ -302,7 +292,7 @@ $('.app').addEventListener('click', (e: MouseEvent) => {
     const thumbnail = productDetailThumbnail;
     const pricePerOne = productDetailPricePerOne;
 
-    storeWishList(id, count, thumbnail, title, pricePerOne);
+    storeWishList({ id, count, thumbnail, title, pricePerOne });
     wishListStore.setLocalStorage(wishListStore.getLocalStorage());
 
     // 찜하기 버튼
@@ -311,7 +301,7 @@ $('.app').addEventListener('click', (e: MouseEvent) => {
     $<HTMLButtonElement>('.aside__productDetail--info-wishlistBtn').innerHTML =
       wishListIMG;
 
-    countQtyInWishlist();
+    updateWishListItemQty();
   }
 
   // [제품 상세 페이지]에서 '장바구니로 바로가기' 버튼 클릭 클릭 -> [장바구니 페이지]로 이동
@@ -351,10 +341,9 @@ const storeRecentViewed = (
       (item: WishListStore): boolean => item.id === existingItem.id,
     );
 
-    recentViewedArr.splice(existingIndex, existingIndex);
-    // recentViewedArr.unshift({ id, title, thumbnail });
-    recentViewStore.setLocalStorage(recentViewedArr);
+    recentViewedArr.splice(existingIndex, 1);
   }
+
   recentViewedArr.unshift({ id, title, thumbnail });
   recentViewStore.setLocalStorage(recentViewedArr);
 };
@@ -364,6 +353,7 @@ export const handleDetailProductPage = async (
   params: string,
 ): Promise<void> => {
   renderInitHeaderLogin();
-  renderSkeletonUIinDetailProductPage();
+  renderCategoryNav(await getAllProducts());
+  renderSkeletonUI(skeletonUITemplateProductDetail, 1, $('.app'));
   await renderDetailProduct(params);
 };

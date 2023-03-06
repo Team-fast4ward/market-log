@@ -3,7 +3,7 @@ import { renderPageBtn, renderProductList } from './renderDetail';
 
 import { $, $$ } from '../../utils/dom';
 
-import { GetAllProductsInterface } from '../../interface/index';
+import { GetAllProductsInterface } from '../../types/index';
 
 let products: GetAllProductsInterface[];
 let activeIdx: number = 1;
@@ -40,26 +40,29 @@ let newProducts = getProductCurrentPage(
 
 /** 상품관리 페이지 핸들러 */
 export const handleProductPage = async (): Promise<void> => {
-  const productList = $('.product-container__list') as HTMLUListElement;
-  const checkProductAll = $(
+  const productList = $<HTMLUListElement>('.product-container__list');
+  const checkProductAll = $<HTMLInputElement>(
     '.product-container__title input',
-  ) as HTMLInputElement;
-  const productPageBtn = $('.product-container__btn-page') as HTMLButtonElement;
+  );
+  const productPageBtn = $<HTMLButtonElement>('.product-container__btn-page');
 
   products = await getAllProducts();
 
   setUpUI(productPageBtn, productList);
 
-  const searchedProductInput = $(
+  const searchedProductInput = $<HTMLInputElement>(
     '.product-container__search-container--input input',
-  ) as HTMLInputElement;
+  );
+
+  const searchedProductBtn = $<HTMLButtonElement>(
+    '.product-container__search-container--input input',
+  );
 
   const searchProductHandler = (): void => {
     const filteredProduct = products.filter((product) =>
-      product.title.toLowerCase().includes(searchedProductInput.value),
+      product.title.trim().toLowerCase().includes(searchedProductInput.value),
     );
 
-    products = filteredProduct;
     productList.innerHTML = ``;
     renderPageBtn(productPageBtn, filteredProduct, 1, itemsPerPage, 1);
     newProducts = getProductCurrentPage(filteredProduct, 1, itemsPerPage);
@@ -68,20 +71,15 @@ export const handleProductPage = async (): Promise<void> => {
 
   /** 상품 검색(enter) 이벤트 리스너 */
   searchedProductInput.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.isComposing) {
+    if (e.key === 'Enter') {
       searchProductHandler();
     }
   });
 
-  searchedProductInput.addEventListener('input', async () => {
-    searchedProductInput.value === ''
-      ? (products = await getAllProducts())
-      : products;
+  /** 상품 검색 이벤트 리스너 */
+  searchedProductBtn.addEventListener('click', async () => {
     searchProductHandler();
   });
-
-  /** 상품 검색(버튼 클릭) 이벤트 리스너 */
-  // searchedProductBtn.addEventListener('click', searchProductHandler);
 
   /** 페이지 버튼 클릭 이벤트 리스너 */
   productPageBtn.addEventListener('click', (e: MouseEvent) => {
@@ -168,14 +166,6 @@ export const handleProductPage = async (): Promise<void> => {
     }
 
     if (confirm('선택한 상품을 삭제하시겠습니까? ')) {
-      // async function deleteProductPromise(newProductsEl) {
-      //   const productsMap = newProductsEl.map(async (newProductEl) => {
-      //     return await deleteProduct(newProductEl.dataset.id);
-      //   });
-      //   return productsMap;
-      // }
-
-      // await deleteProductPromise(newProductsEl);
       await Promise.all(
         newProductsEl.map(
           async (newProductEl: any) =>

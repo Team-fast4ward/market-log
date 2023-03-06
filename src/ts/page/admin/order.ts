@@ -3,7 +3,7 @@ import { renderPageBtn, renderOrderList } from './renderDetail';
 import { toggleLoadingSpinner } from '../../utils/loading';
 import { $ } from '../../utils/dom';
 
-import { TransactionDetailInterface } from '../../interface/index';
+import { TransactionDetailInterface } from '../../types/index';
 
 let orders: TransactionDetailInterface[] = [];
 
@@ -52,12 +52,17 @@ export const handleOrderPage = async (): Promise<void> => {
     '.order-container__search-container--input input',
   );
 
+  const searchedOrderBtn = $<HTMLButtonElement>(
+    '.order-container__search-container--input input',
+  );
+
   const searchOrderHandler = (): void => {
     const filteredOrder = orders.filter((order) =>
-      order.user.displayName.includes(searchedOrderInput.value),
+      order.user.displayName
+        .trim()
+        .toLowerCase()
+        .includes(searchedOrderInput.value),
     );
-
-    orders = filteredOrder;
 
     orderList.innerHTML = ``;
     renderPageBtn(orderPageBtn, filteredOrder, 1, itemsPerPage, 1);
@@ -67,18 +72,15 @@ export const handleOrderPage = async (): Promise<void> => {
 
   /** 거래내역 검색(enter) 이벤트 리스너 */
   searchedOrderInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.isComposing) {
+    if (e.key === 'Enter') {
       searchOrderHandler();
     }
   });
 
-  searchedOrderInput.addEventListener('input', async () => {
-    searchedOrderInput.value === '' ? (orders = await getAllOrder()) : orders;
+  /** 거래내역 검색(버튼 클릭) 이벤트 리스너 */
+  searchedOrderBtn.addEventListener('click', async () => {
     searchOrderHandler();
   });
-
-  /** 거래내역 검색(버튼 클릭) 이벤트 리스너 */
-  // searchedOrderBtn.addEventListener('click', searchOrderHandler);
 
   /** 버튼 클릭 페이지 이동 이벤트 리스너 */
   orderPageBtn.addEventListener('click', (e: MouseEvent) => {

@@ -2,9 +2,13 @@ import { $ } from '../../utils/dom';
 import { renderPage } from '../../utils/render';
 import { getAllProducts } from '../../api';
 import { recentViewStore } from '../../store/recentViewStore';
-import { GetAllProductsInterface } from '../../interface/index';
-import { RecentView } from '../../interface/store';
-import { Category } from '../../interface/enum';
+import { GetAllProductsInterface } from '../../types/index';
+import { RecentView } from '../../types/store';
+import { Category, CategorySortCondition } from '../../types/enum';
+import {
+  renderSkeletonUI,
+  skeletonUITemplateCategoryPage,
+} from '../../utils/skeletonUI';
 
 /*-----------------------------------*\
   #카테고리 페이지 # category js
@@ -43,27 +47,6 @@ export const renderInitCategoryPage = `
   </div>
 `;
 
-/** 카테고리 페이지 skeleton ui 초기 렌더링 */
-export const renderSkeletonUIinCategoryPage = (): void => {
-  const skeletonUITemplate: string = `
-  <li class="categoryPage__skeleton">
-    <div class="categoryPage__skeleton--img"></div>
-    <div class="categoryPage__product--info">
-      <h3 class="categoryPage__skeleton--title"></h3>
-    </div>
-  </li>
-`;
-  const skeletonUI12: string = Array(12)
-    .fill(skeletonUITemplate)
-    .map((v: string) => {
-      return v;
-    })
-    .join('');
-
-  $<HTMLUListElement>('.categoryPage__product--lists')!.innerHTML =
-    skeletonUI12;
-};
-
 /** 카테고리 페이지 제품 db에서 불러오기 */
 const renderCategoryProductList = (items: GetAllProductsInterface[]): void => {
   const categoryProductListTemplate = items
@@ -96,6 +79,17 @@ const renderCategoryProductList = (items: GetAllProductsInterface[]): void => {
 
 /** 최근 본 상품 템플릿 */
 export const renderRecentViewed = (items: RecentView[]) => {
+  if (items.length === 0) {
+    const emptyRecentViewedTemplate = `
+    <li class="categoryPage__aside--img">
+      <p>최근 본 상품이 없습니다.</p>
+    </li>
+    `;
+
+    return ($('.categoryPage__aside--wrapper')!.innerHTML =
+      emptyRecentViewedTemplate);
+  }
+
   const recentViewedTemplate = items
     .map((item: RecentView) => {
       const { id, thumbnail, title } = item;
@@ -115,27 +109,17 @@ export const renderRecentViewed = (items: RecentView[]) => {
 const getProductTags = async () => {
   const allProductArray = await getAllProducts();
 
-  const filterKeyboardTag = allProductArray.filter(
-    (item: GetAllProductsInterface): boolean => {
-      return item.tags[0] === Category.keyboards;
-    },
-  );
+  const filterProductsByCategory = (category: Category) => {
+    return allProductArray.filter((item: GetAllProductsInterface) => {
+      return item.tags[0] === category;
+    });
+  };
 
-  const filterKeycapTag = allProductArray.filter(
-    (item: GetAllProductsInterface): boolean => {
-      return item.tags[0] === Category.keycaps;
-    },
-  );
-  const filterSwitchTag = allProductArray.filter(
-    (item: GetAllProductsInterface): boolean => {
-      return item.tags[0] === Category.switches;
-    },
-  );
-  const filterAccessoryTag = allProductArray.filter(
-    (item: GetAllProductsInterface): boolean => {
-      return item.tags[0] === Category.accessories;
-    },
-  );
+  const filterKeyboardTag = filterProductsByCategory(Category.keyboards);
+  const filterKeycapTag = filterProductsByCategory(Category.keycaps);
+  const filterSwitchTag = filterProductsByCategory(Category.switches);
+  const filterAccessoryTag = filterProductsByCategory(Category.accessories);
+
   return [
     filterKeyboardTag,
     filterKeycapTag,
@@ -155,7 +139,6 @@ const getSortedLowToHighPriceProduct = async (i: number): Promise<void> => {
   );
 
   renderCategoryProductList(LowToHighPrice);
-  return;
 };
 
 /** 가격높은순 정렬 후 렌더링 함수 */
@@ -169,7 +152,6 @@ const getSortedHighToLowPriceProduct = async (i: number): Promise<void> => {
   );
 
   renderCategoryProductList(HighToLowPrice);
-  return;
 };
 
 /** select option에 의해 정렬 */
@@ -177,18 +159,22 @@ const renderCategoryProductBySelect = async (
   condition: string,
   i: number,
 ): Promise<void> => {
-  renderSkeletonUIinCategoryPage();
-  // const getProductTagList = await getProductTags();
+  renderSkeletonUI(
+    skeletonUITemplateCategoryPage,
+    12,
+    $<HTMLUListElement>('.categoryPage__product--lists'),
+  );
 
-  if (condition === 'reset') {
+  if (condition === CategorySortCondition.RESET) {
     return categoryUtilInit(i);
   }
-  if (condition === 'LowToHigh') {
+  if (condition === CategorySortCondition.LOW_TO_HIGH) {
     return await getSortedLowToHighPriceProduct(i);
-  } else if (condition === 'HighToLow') {
+  } else if (condition === CategorySortCondition.High_TO_LOW) {
     return await getSortedHighToLowPriceProduct(i);
   }
 };
+/**  */
 
 /** 카테고리별 상품 개수 렌더링 */
 const renderCategoryProductQty = async (i: number): Promise<void> => {
@@ -205,10 +191,11 @@ export const handleCategoryPage = async (i: number): Promise<void> => {
 
   renderPage(renderInitCategoryPage);
   renderRecentViewed(recentViewStore.getLocalStorage().slice(0, 5));
-  renderSkeletonUIinCategoryPage();
-  //
-  // const getKeyBoardCategory = await getProductTags();
-  // renderCategoryProductList(await getKeyBoardCategory[i]);
+  renderSkeletonUI(
+    skeletonUITemplateCategoryPage,
+    12,
+    $<HTMLUListElement>('.categoryPage__product--lists'),
+  );
   categoryUtilInit(i);
   //
 
@@ -218,12 +205,13 @@ export const handleCategoryPage = async (i: number): Promise<void> => {
   $('.app')
     .querySelector('#categoryPage-filterByPrice')
     ?.addEventListener('change', async () => {
-      renderCategoryProductBySelect(
-        $<HTMLSelectElement>('#categoryPage-filterByPrice').options[
-          $<HTMLSelectElement>('#categoryPage-filterByPrice').selectedIndex
-        ].value,
-        i,
-      );
+      const selectedOptionValue = $<HTMLSelectElement>(
+        '#categoryPage-filterByPrice',
+      ).options[
+        $<HTMLSelectElement>('#categoryPage-filterByPrice').selectedIndex
+      ].value;
+
+      renderCategoryProductBySelect(selectedOptionValue, i);
     });
 };
 /*-----------------------------------*\

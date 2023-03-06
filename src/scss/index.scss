@@ -3,7 +3,6 @@
 // [메인페이지]
 @forward './main.scss';
 
-// [관리자페이지]
 @forward './admin/admin.scss';
 @forward './admin/dashboard.scss';
 @forward './admin/order.scss';
@@ -13,30 +12,17 @@
 @forward './admin/productDetail.scss';
 @forward './admin/productEdit.scss';
 
-// [제품 상세 페이지]
 @forward './productDetail/productsDetail.scss';
-
-// [장바구니 페이지]
 @forward './cart/cart.scss';
-
-// [결제 페이지]
-@forward './pay/pay.scss';
-
-// [카테고리 페이지]
+@forward './payment/payment.scss';
 @forward './category/category.scss';
+@forward './search/search.scss';
 
-// [검색 페이지]
-@forward './searchPage/searchPage.scss';
-
-// [마이 페이지]
 @forward '../scss/mypage/mypage.scss';
 
-// [로그인, 회원가입 페이지]
 @forward '../scss/login/login.scss';
 @forward '../scss/signup/signup.scss';
 
-// [에러 페이지]
-@forward '../scss/404error/error.scss';
-
-// [모달]
 @forward '../scss/modal/modal.scss';
+
+@forward './errorPage/errorPage.scss';

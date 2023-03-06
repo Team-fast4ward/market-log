@@ -1,5 +1,5 @@
 import { $ } from '../utils/dom';
-import { htmlHeaderLogin } from './login';
+import { htmlHeaderLogin } from './loginPage';
 import { router } from '../main';
 import { renderPage } from '../utils/render';
 import { getUserList, signup } from '../api';
