@@ -3,7 +3,7 @@
 .categoryPage {
   margin-top: 60px;
   min-height: 450px;
-  height: 1500px; // 있어야 sticky 동작
+  // height: 1500px; // 있어야 sticky 동작
   display: flex;
   position: relative;
 
@@ -89,7 +89,6 @@
       justify-content: space-around;
       position: relative;
       min-height: 450px;
-      max-height: 1500px;
     }
     &--list {
       margin: 20px 5px;
@@ -200,9 +199,23 @@
       justify-content: center;
       gap: 20px;
     }
+    button {
+      border-radius: 50%;
+    }
     button.active-btn {
       border: 1px solid var(--logo-color);
       border-radius: 50%;
+    }
+    &-prev,
+    &-next {
+      border: 1px solid var(--logo-color);
+      border-radius: 5px;
+      padding: 6px 10px;
+    }
+    &-prev:hover,
+    &-next:hover {
+      background-color: var(--logo-color);
+      color: #fff;
     }
   }
 }
