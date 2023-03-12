@@ -419,8 +419,6 @@ export async function login(): Promise<PersonalInfoLogin> {
       token: json.accessToken ?? undefined,
     });
   }
-  console.log(tokenHeaders);
-
   return json;
 }
 

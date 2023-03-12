@@ -121,6 +121,7 @@ function initFuncLogin() {
     displayUserName(loginJSON);
     localStorage.setItem('marketLogToken', loginJSON.accessToken);
     userDisplayName = loginJSON.user.displayName;
+    userEmail = loginJSON.user.email;
     router.navigate('/');
   });
 

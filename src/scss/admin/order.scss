@@ -141,4 +141,8 @@
       @include paginationBtn();
     }
   }
+  .active {
+    color: #fff;
+    background-color: #000;
+  }
 }

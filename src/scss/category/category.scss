@@ -166,6 +166,7 @@
 
   &--img {
     margin-left: 200px;
+    object-fit: contain;
     @include skeletonUI(500px, 500px);
   }
 
